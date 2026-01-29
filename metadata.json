@@ -1,0 +1,8 @@
+{
+  "name": "Home Protection - Maintenance Services",
+  "description": "A comprehensive maintenance service platform featuring a dynamic service catalog, booking system, career portal, and a robust role-based admin dashboard.",
+  "requestFramePermissions": [
+    "camera",
+    "geolocation"
+  ]
+}
