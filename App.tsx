@@ -12,6 +12,8 @@ import ContactPage from './pages/ContactPage';
 import CareersPage from './pages/CareersPage';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
+import BookingPage from './pages/BookingPage';
+import CheckoutPage from './pages/CheckoutPage';
 
 // Dashboards
 import AdminDashboard from './pages/admin/AdminDashboard';
@@ -169,8 +171,10 @@ const App: React.FC = () => {
             <Route path="/about" element={<><Navbar /><AboutPage /><Footer /></>} />
             <Route path="/contact" element={<><Navbar /><ContactPage /><Footer /></>} />
             <Route path="/careers" element={<><Navbar /><CareersPage /><Footer /></>} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/signup" element={<SignupPage />} />
+            <Route path="/booking" element={<><Navbar /><BookingPage /><Footer /></>} />
+            <Route path="/checkout" element={<><Navbar /><CheckoutPage /><Footer /></>} />
+            <Route path="/login" element={<><Navbar /><LoginPage /><Footer /></>} />
+            <Route path="/signup" element={<><Navbar /><SignupPage /><Footer /></>} />
 
             {/* Protected Roles */}
             <Route 

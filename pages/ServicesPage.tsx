@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import { supabase } from '../supabase';
 import { Service, ServiceCategory } from '../types';
 
@@ -12,6 +12,7 @@ const ServicesPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
 
   const activeCategoryId = searchParams.get('category') || 'all';
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -132,7 +133,7 @@ const ServicesPage: React.FC = () => {
                         </div>
                       </div>
 
-                      <button className="w-full bg-blue-600 text-white py-3 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-blue-700 transition-colors shadow-lg shadow-blue-100">
+                      <button onClick={() => navigate(`/booking?service=${service.id}`)} className="w-full bg-blue-600 text-white py-3 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-blue-700 transition-colors shadow-lg shadow-blue-100">
                         <i className="fas fa-calendar-check"></i> Book Now
                       </button>
                     </div>
