@@ -60,7 +60,7 @@ const HomePage: React.FC = () => {
               <span className="text-yellow-400">Professional Protection</span>
             </h1>
             <p className="text-xl text-gray-200 mb-10 leading-relaxed">
-              Protector is coming at your home. We provide reliable, expert maintenance services to keep your space safe and comfortable.
+              Our protector is coming at your home. We are experts to take care of your home. We provide services in preferred time. Ensure the standards and security of the home.
             </p>
             <div className="flex flex-wrap gap-4">
               <Link to="/services" className="bg-yellow-400 text-blue-900 px-8 py-4 rounded-xl font-bold text-lg hover:bg-yellow-500 transition-all flex items-center gap-2 group">
@@ -137,19 +137,22 @@ const HomePage: React.FC = () => {
                 <img src="https://img.freepik.com/premium-photo/male-technician-repairing-air-conditioner-safety-uniform-indoors_61243-423.jpg?q=80&w=2069&auto=format&fit=crop" alt="Quality Service" className="w-full h-[500px] object-cover" />
               </div>
               <div className="absolute -bottom-10 -right-10 bg-yellow-400 p-8 rounded-3xl shadow-xl hidden md:block w-48 text-center">
-                <p className="text-4xl font-black text-blue-900">10+</p>
+                <p className="text-4xl font-black text-blue-900">20+</p>
                 <p className="text-sm font-bold text-blue-800 uppercase tracking-tighter">Years Excellence</p>
               </div>
             </div>
             <div className="lg:w-1/2">
-              <h2 className="text-4xl font-extrabold text-blue-900 mb-8">
+              <h2 className="text-4xl font-extrabold text-blue-900 mb-8" style={{textAlign: 'center'}}>
                 Experience the Best Home <br /> Protection Services
               </h2>
-              <p className="text-gray-600 text-lg mb-8 leading-relaxed">
-                At Home Protection, we understand that your home is your sanctuary. Our team of certified professionals is dedicated to ensuring everything runs smoothly, from your AC cooling efficiency to your security systems.
+              <p className="text-gray-600 text-lg mb-8 leading-relaxed" style={{textAlign: 'justify'}}>
+                Our protector is coming at your home. We have experts to take care of your home. We provide services in the given time. Ensure the standards and security of the home. Special care is taken to ensure that the honor of the family is not damaged during the work.
+              </p>
+              <p className="text-gray-600 text-lg mb-8 leading-relaxed" style={{textAlign: 'justify'}}>
+                Our first priority is that your beloved home always remains magnificent and lasts for a long time. Our consultants provide the best advice to save your money and time. Because we know that you have built it with great love. The problem of your home is not only yours——it is also ours, which we solve with 25 years of experience.
               </p>
               <ul className="space-y-4 mb-10">
-                {['Quality Workmanship Guaranteed', 'Transparent Pricing with No Hidden Costs', 'Support Available', 'Background-checked & Certified Pros'].map((item, idx) => (
+                {['Quality Workmanship Guaranteed', 'Transparent Pricing with No Hidden Costs', 'Background-checked & Certified Pros'].map((item, idx) => (
                   <li key={idx} className="flex items-center gap-3 text-blue-900 font-semibold">
                     <i className="fas fa-check-circle text-blue-600"></i>
                     {item}

@@ -16,7 +16,7 @@ const Footer: React.FC = () => {
               <span className="text-2xl font-bold text-white">Home Protection</span>
             </Link>
             <p className="text-sm leading-relaxed text-gray-400">
-              Leading maintenance service provider in Pakistan. Providing top-tier solutions for AC, Electrical, Plumbing, and more since 2020.
+              Leading maintenance service provider in Pakistan. Providing top-tier solutions for AC, Electrical, Plumbing, and Real Estate since 2005.
             </p>
             <div className="flex gap-4">
               <a href="#" className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-blue-600 transition-colors text-white">
@@ -53,8 +53,8 @@ const Footer: React.FC = () => {
               <li><Link to="/services?cat=ac" className="hover:text-blue-500 transition-colors">AC Maintenance</Link></li>
               <li><Link to="/services?cat=electrical" className="hover:text-blue-500 transition-colors">Electrical Works</Link></li>
               <li><Link to="/services?cat=plumbing" className="hover:text-blue-500 transition-colors">Plumbing Services</Link></li>
-              <li><Link to="/services?cat=security" className="hover:text-blue-500 transition-colors">Security Systems</Link></li>
-              <li><Link to="/services?cat=janitorial" className="hover:text-blue-500 transition-colors">Janitorial Services</Link></li>
+              <li><Link to="/services?cat=security" className="hover:text-blue-500 transition-colors">Painting Services</Link></li>
+              <li><Link to="/services?cat=janitorial" className="hover:text-blue-500 transition-colors">Real Estate Services</Link></li>
             </ul>
           </div>
 
@@ -64,19 +64,19 @@ const Footer: React.FC = () => {
             <ul className="space-y-4 text-sm">
               <li className="flex gap-3">
                 <i className="fas fa-map-marker-alt text-blue-500 mt-1"></i>
-                <span>132-1-D1, Town Ship, Lahore, Punjab, Pakistan</span>
+                <span>Town Ship, Lahore, Punjab, Pakistan</span>
               </li>
               <li className="flex gap-3">
                 <i className="fas fa-phone-alt text-blue-500 mt-1"></i>
-                <span>+92 321 4605210</span>
+                <span>+92-316-1455160</span>
               </li>
               <li className="flex gap-3">
                 <i className="fas fa-envelope text-blue-500 mt-1"></i>
-                <span>info@homeprotection.pk</span>
+                <span>latestservicesprovider@gmail.com</span>
               </li>
               <li className="flex gap-3">
                 <i className="fas fa-clock text-blue-500 mt-1"></i>
-                <span>Mon - Sat: 09:00 - 18:00</span>
+                <span>Mon - Sat: 09:00 AM - 06:00 PM</span>
               </li>
             </ul>
           </div>

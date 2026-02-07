@@ -27,7 +27,8 @@ const ContactPage: React.FC = () => {
               </div>
               <div>
                 <h3 className="text-xl font-black text-blue-900">Available Days</h3>
-                <p className="text-gray-500 text-sm">Monday to Sunday</p>
+                <br></br>
+                <p className="text-gray-500 text-sm font-bold">Monday to Sunday</p>
               </div>
             </div>
             <p className="text-gray-600 text-sm leading-relaxed">We are available to serve you throughout the week. Our team operates on weekdays as well as weekends to ensure maximum availability for all your home maintenance needs.</p>
@@ -41,8 +42,8 @@ const ContactPage: React.FC = () => {
               <div>
                 <h3 className="text-xl font-black text-blue-900">Available Time</h3>
                 <br></br>
-                <p className="text-gray-500 text-sm">Mon-Fri : 10:00 AM - 08:00 PM</p>
-                <p className="text-gray-500 text-sm">Sat-Sun : 11:00 AM - 06:00 PM</p>
+                <p className="text-gray-500 text-sm font-bold">Mon-Sat : 09:00 AM - 06:00 PM</p>
+                <p className="text-gray-500 text-sm font-bold">Sunday : 11:00 AM - 06:00 PM</p>
               </div>
             </div>
             <p className="text-gray-600 text-sm leading-relaxed">Extended working hours to accommodate your schedule. Emergency services are available for urgent repairs and critical maintenance issues.</p>
@@ -101,27 +102,29 @@ const ContactPage: React.FC = () => {
           {/* Sidebar */}
           <div className="space-y-8">
             <div className="bg-white p-10 rounded-[2.5rem] shadow-lg border border-gray-100">
-              <h3 className="text-xl font-black text-blue-900 mb-8">Head Office</h3>
+              <h3 className="text-xl font-black text-blue-900 mb-8" style={{textAlign: 'center'}}>Head Office</h3>
               <div className="space-y-6">
                 <div className="flex gap-4">
                   <div className="text-blue-600 text-xl"><i className="fas fa-map-marker-alt"></i></div>
-                  <p className="text-gray-600 text-sm">132-1-D1, Town Ship, Lahore, Punjab, Pakistan</p>
+                  <p className="text-gray-600 text-sm">Town Ship, Lahore, Punjab, Pakistan</p>
                 </div>
                 <div className="flex gap-4">
                   <div className="text-blue-600 text-xl"><i className="fas fa-phone-alt"></i></div>
-                  <p className="text-gray-600 text-sm font-bold">+92 321 4605210</p>
+                  <p className="text-gray-600 text-sm font-bold">+92-316-1455160</p>
                 </div>
                 <div className="flex gap-4">
                   <div className="text-blue-600 text-xl"><i className="fas fa-envelope"></i></div>
-                  <p className="text-gray-600 text-sm">info@homeprotection.pk</p>
+                  <p className="text-gray-600 text-sm">latestservicesprovider@gmail.com</p>
                 </div>
               </div>
             </div>
+            <br></br>
+            <br></br>
 
             <div className="bg-blue-900 p-10 rounded-[2.5rem] shadow-lg text-white">
-              <h3 className="text-xl font-bold mb-4">Emergency Help?</h3>
-              <p className="text-blue-200 text-sm mb-8">Our rapid response team is available 12 hours a day for electrical and plumbing emergencies.</p>
-              <a href="tel:+923214605210" className="block text-center bg-yellow-400 text-blue-900 py-4 rounded-2xl font-black hover:bg-yellow-500 transition-all">
+              <h3 className="text-xl font-bold mb-4" style={{textAlign: 'center'}}>Emergency Help?</h3>
+              <p className="text-blue-200 text-sm mb-8" style={{textAlign: 'center'}}>Our rapid response team is available 12 hours a day for electrical and plumbing emergencies.</p>
+              <a href="tel:+923161455160" className="block text-center bg-yellow-400 text-blue-900 py-4 rounded-2xl font-black hover:bg-yellow-500 transition-all">
                 Call Now
               </a>
             </div>
