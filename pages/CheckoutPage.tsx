@@ -16,11 +16,60 @@ const CheckoutPage: React.FC = () => {
     try {
       // Try to persist booking to `bookings` table if available
       if (supabase) {
-        const { error } = await supabase.from('bookings').insert([{ service_id: service?.id || null, customer_name: customer?.name || null, customer_email: customer?.email || null, customer_phone: customer?.phone || null, preferred_date: customer?.preferredDate || null, notes: customer?.notes || null }]);
+        const { error } = await supabase.from('bookings').insert([{ 
+          service_id: service?.id || null, 
+          customer_name: customer?.name || null, 
+          customer_email: customer?.email || null, 
+          customer_phone: customer?.phone || null, 
+          preferred_date: customer?.preferredDate || null, 
+          notes: customer?.notes || null,
+          address: customer?.address || null,
+          total_amount: service?.discount_price || null,
+          status: 'pending' }]);
         if (error) {
           console.warn('Could not save booking:', error.message);
         }
       }
+
+      // Step 1: Insert into bookings table
+        const { data: booking, error: bookingError } = await supabase
+        .from('bookings')
+        .insert([{
+          service_id: service.id,
+          customer_name: customer.name,
+          customer_email: customer.email,
+          contact_number: customer.phone,
+          scheduled_at: customer.preferredDate ? new Date(customer.preferredDate).toISOString() : new Date().toISOString(),
+          notes: customer.notes,
+          address: customer.address || '',
+          total_amount: service.discount_price || 0,
+          status: 'pending',
+          created_at: new Date().toISOString() // optional
+      }])
+      .select()
+      .single();
+
+    if (bookingError) {
+      console.error('Booking insert failed:', bookingError);
+      setMessage('Failed to save booking. Please try again.');
+      return;
+    }
+
+    // Step 2: Insert into booking_items table
+    if (booking) {
+      const { error: itemError } = await supabase
+        .from('booking_items')
+        .insert([{
+          booking_id: booking.id,
+          service_id: service.id,
+          quantity: 1,
+          price_at_booking: service.discount_price
+        }]);
+
+      if (itemError) {
+        console.warn('Booking items insert failed:', itemError);
+      }
+    }
 
       setMessage('Booking confirmed! We will contact you shortly.');
       setTimeout(() => navigate('/'), 2500);

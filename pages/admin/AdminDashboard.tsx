@@ -10,6 +10,7 @@ import ServiceManagement from './ServiceManagement';
 import CategoryManagement from './CategoryManagement';
 import BookingManagement from './BookingManagement';
 import CareersManagement from './CareersManagement';
+import ContactMessages from './ContactMessages';
 
 const AdminDashboard: React.FC = () => {
   const { user, signOut } = useAuth();
@@ -28,6 +29,7 @@ const AdminDashboard: React.FC = () => {
     { name: 'Services', path: '/admin/services', icon: 'fa-cog' },
     { name: 'Categories', path: '/admin/categories', icon: 'fa-tags' },
     { name: 'Careers', path: '/admin/careers', icon: 'fa-briefcase' },
+    { name: 'Contact Messages', path: '/admin/contact-messages', icon: 'fa-envelope' },
     { name: 'Feedback', path: '/admin/feedback', icon: 'fa-comment-dots' },
   ];
 
@@ -105,6 +107,7 @@ const AdminDashboard: React.FC = () => {
             <Route path="categories" element={<CategoryManagement />} />
             <Route path="bookings" element={<BookingManagement />} />
             <Route path="careers" element={<CareersManagement />} />
+            <Route path="contact-messages" element={<ContactMessages />} />
             <Route path="feedback" element={<div className="bg-white p-12 rounded-3xl text-center"><i className="fas fa-tools text-6xl text-gray-100 mb-6"></i><p className="text-gray-400">Feedback Module Coming Soon</p></div>} />
           </Routes>
         </div>

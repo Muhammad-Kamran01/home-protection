@@ -1,12 +1,43 @@
-
-import React, { useState } from 'react';
+import React, { useState } from "react";
+import { supabase } from "../supabase";
 
 const ContactPage: React.FC = () => {
   const [submitted, setSubmitted] = useState(false);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [subject, setSubject] = useState("General Inquiry");
+  const [message, setMessage] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    const { error } = await supabase.from("contact_messages").insert([
+      {
+        name: name,
+        email: email,
+        phone: phone,
+        category: subject,
+        message: message,
+        status: "unread",
+      },
+    ]);
+
+    if (error) {
+      console.error("Message insert error:", error.message);
+      alert("Failed to send message.");
+      return;
+    }
+
     setSubmitted(true);
+
+    // Reset form
+    setName("");
+    setEmail("");
+    setPhone("");
+    setSubject("General Inquiry");
+    setMessage("");
+
     setTimeout(() => setSubmitted(false), 5000);
   };
 
@@ -14,7 +45,9 @@ const ContactPage: React.FC = () => {
     <div className="bg-gray-50 min-h-screen">
       <div className="bg-blue-800 py-24 text-center text-white">
         <h1 className="text-5xl font-black mb-6">Contact Us</h1>
-        <p className="text-blue-100 max-w-xl mx-auto">Have a question or need an emergency repair? We are here to help you.</p>
+        <p className="text-blue-100 max-w-xl mx-auto">
+          Have a question or need an emergency repair? We are here to help you.
+        </p>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
@@ -26,12 +59,20 @@ const ContactPage: React.FC = () => {
                 <i className="fas fa-calendar-days"></i>
               </div>
               <div>
-                <h3 className="text-xl font-black text-blue-900">Available Days</h3>
+                <h3 className="text-xl font-black text-blue-900">
+                  Available Days
+                </h3>
                 <br></br>
-                <p className="text-gray-500 text-sm font-bold">Monday to Sunday</p>
+                <p className="text-gray-500 text-sm font-bold">
+                  Monday to Sunday
+                </p>
               </div>
             </div>
-            <p className="text-gray-600 text-sm leading-relaxed">We are available to serve you throughout the week. Our team operates on weekdays as well as weekends to ensure maximum availability for all your home maintenance needs.</p>
+            <p className="text-gray-600 text-sm leading-relaxed">
+              We are available to serve you throughout the week. Our team
+              operates on weekdays as well as weekends to ensure maximum
+              availability for all your home maintenance needs.
+            </p>
           </div>
 
           <div className="bg-white p-10 rounded-[2.5rem] shadow-lg border border-gray-100 text-center">
@@ -40,13 +81,23 @@ const ContactPage: React.FC = () => {
                 <i className="fas fa-clock"></i>
               </div>
               <div>
-                <h3 className="text-xl font-black text-blue-900">Available Time</h3>
+                <h3 className="text-xl font-black text-blue-900">
+                  Available Time
+                </h3>
                 <br></br>
-                <p className="text-gray-500 text-sm font-bold">Mon-Sat : 09:00 AM - 06:00 PM</p>
-                <p className="text-gray-500 text-sm font-bold">Sunday : 11:00 AM - 06:00 PM</p>
+                <p className="text-gray-500 text-sm font-bold">
+                  Mon-Sat : 09:00 AM - 06:00 PM
+                </p>
+                <p className="text-gray-500 text-sm font-bold">
+                  Sunday : 11:00 AM - 06:00 PM
+                </p>
               </div>
             </div>
-            <p className="text-gray-600 text-sm leading-relaxed">Extended working hours to accommodate your schedule. Emergency services are available for urgent repairs and critical maintenance issues.</p>
+            <p className="text-gray-600 text-sm leading-relaxed">
+              Extended working hours to accommodate your schedule. Emergency
+              services are available for urgent repairs and critical maintenance
+              issues.
+            </p>
           </div>
         </div>
 
@@ -58,29 +109,67 @@ const ContactPage: React.FC = () => {
                 <div className="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center text-4xl mx-auto mb-6">
                   <i className="fas fa-check"></i>
                 </div>
-                <h2 className="text-3xl font-black text-blue-900 mb-4">Message Sent!</h2>
-                <p className="text-gray-500">We have received your inquiry and will get back to you within 2 hours.</p>
+                <h2 className="text-3xl font-black text-blue-900 mb-4">
+                  Message Sent!
+                </h2>
+                <p className="text-gray-500">
+                  We have received your inquiry and will get back to you within
+                  2 hours.
+                </p>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-8">
                 <div className="grid md:grid-cols-2 gap-8">
                   <div className="space-y-2">
-                    <label className="text-sm font-bold text-gray-700">Full Name</label>
-                    <input required type="text" className="w-full px-6 py-4 rounded-2xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-600 bg-gray-50" placeholder="John Doe" />
+                    <label className="text-sm font-bold text-gray-700">
+                      Full Name
+                    </label>
+                    <input
+                      required
+                      type="text"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      className="w-full px-6 py-4 rounded-2xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-600 bg-gray-50"
+                      placeholder="John Doe"
+                    />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-sm font-bold text-gray-700">Email Address</label>
-                    <input required type="email" className="w-full px-6 py-4 rounded-2xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-600 bg-gray-50" placeholder="john@example.com" />
+                    <label className="text-sm font-bold text-gray-700">
+                      Email Address
+                    </label>
+                    <input
+                      required
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className="w-full px-6 py-4 rounded-2xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-600 bg-gray-50"
+                      placeholder="john@example.com"
+                    />
                   </div>
                 </div>
                 <div className="grid md:grid-cols-2 gap-8">
                   <div className="space-y-2">
-                    <label className="text-sm font-bold text-gray-700">Phone Number</label>
-                    <input required type="tel" className="w-full px-6 py-4 rounded-2xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-600 bg-gray-50" placeholder="+92 3XX XXXXXXX" />
+                    <label className="text-sm font-bold text-gray-700">
+                      Phone Number
+                    </label>
+                    <input
+                      required
+                      type="tel"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                      className="w-full px-6 py-4 rounded-2xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-600 bg-gray-50"
+                      placeholder="+92 3XX XXXXXXX"
+                    />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-sm font-bold text-gray-700">Subject</label>
-                    <select className="w-full px-6 py-4 rounded-2xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-600 bg-gray-50">
+                    <label className="text-sm font-bold text-gray-700">
+                      Subject
+                    </label>
+                    <select
+                      className="w-full px-6 py-4 rounded-2xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-600 bg-gray-50"
+                      value={subject}
+                      onChange={(e) => setSubject(e.target.value)}
+                    >
                       <option>General Inquiry</option>
                       <option>Emergency Service</option>
                       <option>Billing Question</option>
@@ -89,10 +178,22 @@ const ContactPage: React.FC = () => {
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <label className="text-sm font-bold text-gray-700">Your Message</label>
-                  <textarea required rows={5} className="w-full px-6 py-4 rounded-2xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-600 bg-gray-50" placeholder="How can we help you?"></textarea>
+                  <label className="text-sm font-bold text-gray-700">
+                    Your Message
+                  </label>
+                  <textarea
+                    required
+                    rows={5}
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    className="w-full px-6 py-4 rounded-2xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-600 bg-gray-50"
+                    placeholder="How can we help you?"
+                  ></textarea>
                 </div>
-                <button type="submit" className="w-full bg-blue-600 text-white py-5 rounded-2xl font-black text-lg hover:bg-blue-700 transition-all shadow-xl shadow-blue-100">
+                <button
+                  type="submit"
+                  className="w-full bg-blue-600 text-white py-5 rounded-2xl font-black text-lg hover:bg-blue-700 transition-all shadow-xl shadow-blue-100"
+                >
                   Send Message
                 </button>
               </form>
@@ -102,19 +203,36 @@ const ContactPage: React.FC = () => {
           {/* Sidebar */}
           <div className="space-y-8">
             <div className="bg-white p-10 rounded-[2.5rem] shadow-lg border border-gray-100">
-              <h3 className="text-xl font-black text-blue-900 mb-8" style={{textAlign: 'center'}}>Head Office</h3>
+              <h3
+                className="text-xl font-black text-blue-900 mb-8"
+                style={{ textAlign: "center" }}
+              >
+                Head Office
+              </h3>
               <div className="space-y-6">
                 <div className="flex gap-4">
-                  <div className="text-blue-600 text-xl"><i className="fas fa-map-marker-alt"></i></div>
-                  <p className="text-gray-600 text-sm">Town Ship, Lahore, Punjab, Pakistan</p>
+                  <div className="text-blue-600 text-xl">
+                    <i className="fas fa-map-marker-alt"></i>
+                  </div>
+                  <p className="text-gray-600 text-sm">
+                    Town Ship, Lahore, Punjab, Pakistan
+                  </p>
                 </div>
                 <div className="flex gap-4">
-                  <div className="text-blue-600 text-xl"><i className="fas fa-phone-alt"></i></div>
-                  <p className="text-gray-600 text-sm font-bold">+92-316-1455160</p>
+                  <div className="text-blue-600 text-xl">
+                    <i className="fas fa-phone-alt"></i>
+                  </div>
+                  <p className="text-gray-600 text-sm font-bold">
+                    +92-316-1455160
+                  </p>
                 </div>
                 <div className="flex gap-4">
-                  <div className="text-blue-600 text-xl"><i className="fas fa-envelope"></i></div>
-                  <p className="text-gray-600 text-sm">latestservicesprovider@gmail.com</p>
+                  <div className="text-blue-600 text-xl">
+                    <i className="fas fa-envelope"></i>
+                  </div>
+                  <p className="text-gray-600 text-sm">
+                    latestservicesprovider@gmail.com
+                  </p>
                 </div>
               </div>
             </div>
@@ -122,9 +240,23 @@ const ContactPage: React.FC = () => {
             <br></br>
 
             <div className="bg-blue-900 p-10 rounded-[2.5rem] shadow-lg text-white">
-              <h3 className="text-xl font-bold mb-4" style={{textAlign: 'center'}}>Emergency Help?</h3>
-              <p className="text-blue-200 text-sm mb-8" style={{textAlign: 'center'}}>Our rapid response team is available 12 hours a day for electrical and plumbing emergencies.</p>
-              <a href="tel:+923161455160" className="block text-center bg-yellow-400 text-blue-900 py-4 rounded-2xl font-black hover:bg-yellow-500 transition-all">
+              <h3
+                className="text-xl font-bold mb-4"
+                style={{ textAlign: "center" }}
+              >
+                Emergency Help?
+              </h3>
+              <p
+                className="text-blue-200 text-sm mb-8"
+                style={{ textAlign: "center" }}
+              >
+                Our rapid response team is available 12 hours a day for
+                electrical and plumbing emergencies.
+              </p>
+              <a
+                href="tel:+923161455160"
+                className="block text-center bg-yellow-400 text-blue-900 py-4 rounded-2xl font-black hover:bg-yellow-500 transition-all"
+              >
                 Call Now
               </a>
             </div>
