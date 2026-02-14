@@ -6,23 +6,48 @@ const BookingManagement: React.FC = () => {
   const [bookings, setBookings] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedBooking, setSelectedBooking] = useState<any | null>(null);
+  const [staffList, setStaffList] = useState<any[]>([]);
 
   const fetchBookings = async () => {
     setLoading(true);
-    const { data } = await supabase
+    const { data, error } = await supabase
       .from("bookings")
-      .select("*, profiles(full_name, phone)")
+      .select("*")
       .order("created_at", { ascending: false });
-    if (data) setBookings(data);
-    setLoading(false);
+
+    if (error) {
+      console.error("Fetch error:", error);
+    } else {
+      console.log("Bookings:", data);
+      setBookings(data);
+    }
+  };
+
+  const fetchStaff = async () => {
+    const { data } = await supabase
+      .from("profiles")
+      .select("*")
+      .eq("role", "staff");
+
+    if (data) setStaffList(data);
   };
 
   useEffect(() => {
     fetchBookings();
+    fetchStaff();
   }, []);
 
   const updateStatus = async (id: string, status: string) => {
     await supabase.from("bookings").update({ status }).eq("id", id);
+    fetchBookings();
+  };
+
+  const assignStaff = async (bookingId: string, staffId: string) => {
+    await supabase
+      .from("bookings")
+      .update({ assigned_staff: staffId })
+      .eq("id", bookingId);
+
     fetchBookings();
   };
 
@@ -70,13 +95,29 @@ const BookingManagement: React.FC = () => {
                     <option value="cancelled">Cancelled</option>
                   </select>
                 </td>
-                <td className="px-8 py-6">
+                <td className="px-8 py-6 space-y-2">
+                  {/* Details Button */}
                   <button
                     onClick={() => setSelectedBooking(b)}
-                    className="text-blue-600 font-bold text-xs hover:underline"
+                    className="block text-blue-600 font-bold text-xs hover:underline"
                   >
                     Details
                   </button>
+
+                  {/* Assign Staff */}
+                  <select
+                    value={b.assigned_staff || ""}
+                    onChange={(e) => assignStaff(b.id, e.target.value)}
+                    className="text-xs bg-gray-50 border rounded px-2 py-1 w-full"
+                  >
+                    <option value="">Assign Staff</option>
+
+                    {staffList.map((staff) => (
+                      <option key={staff.id} value={staff.id}>
+                        {staff.full_name}
+                      </option>
+                    ))}
+                  </select>
                 </td>
               </tr>
             ))}
