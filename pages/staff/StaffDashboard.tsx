@@ -53,7 +53,6 @@ const StaffDashboard: React.FC = () => {
         return "bg-blue-100 text-yellow-700 border-yellow-200";
     }
   };
-  
 
   return (
     <div className="flex-1 bg-gray-50 flex h-[calc(100vh-80px)] overflow-hidden">
@@ -66,7 +65,9 @@ const StaffDashboard: React.FC = () => {
               {user?.full_name?.[0]}
             </div>
             <div className="overflow-hidden">
-              <h2 className="font-bold text-sm whitespace-nowrap overflow-hidden text-ellipsis">{user?.full_name}</h2>
+              <h2 className="font-bold text-sm whitespace-nowrap overflow-hidden text-ellipsis">
+                {user?.full_name}
+              </h2>
               <p className="text-[10px] text-blue-400 font-black uppercase tracking-widest">
                 Technician
               </p>
@@ -82,12 +83,14 @@ const StaffDashboard: React.FC = () => {
                 : "bg-red-500/10 border-red-500/50 text-red-400"
             }`}
           >
-           <div className="flex items-center gap-3">
-              <div className={`w-2 h-2 rounded-full animate-pulse ${isOnDuty ? 'bg-green-400' : 'bg-red-400'}`}></div>
-            <span className="text-[10px] font-black uppercase tracking-widest">
-              {isOnDuty ? "On Duty" : "Off Duty"}
-            </span>
-           </div>
+            <div className="flex items-center gap-3">
+              <div
+                className={`w-2 h-2 rounded-full animate-pulse ${isOnDuty ? "bg-green-400" : "bg-red-400"}`}
+              ></div>
+              <span className="text-[10px] font-black uppercase tracking-widest">
+                {isOnDuty ? "On Duty" : "Off Duty"}
+              </span>
+            </div>
             <i
               className={`fas ${
                 isOnDuty ? "fa-toggle-on" : "fa-toggle-off"
@@ -140,14 +143,16 @@ const StaffDashboard: React.FC = () => {
       {/* ---------------- CONTENT ---------------- */}
       <div className="flex-1 flex flex-col overflow-hidden">
         <header className="bg-white px-10 py-6 shadow-sm border-b border-gray-100 flex justify-between items-center shrink-0">
-        <div>
-          <h1 className="text-2xl font-black text-blue-900">
-              {activeTab === 'jobs' && 'Assigned Service Requests'}
-              {activeTab === 'schedule' && 'Shift Schedule'}
-              {activeTab === 'history' && 'Job Completion History'}
-              {activeTab === 'stats' && 'Performance Analytics'}
-          </h1>
-          <p className="text-xs text-gray-500 font-medium">Manage your active tasks and update their status.</p>
+          <div>
+            <h1 className="text-2xl font-black text-blue-900">
+              {activeTab === "jobs" && "Assigned Service Requests"}
+              {activeTab === "schedule" && "Shift Schedule"}
+              {activeTab === "history" && "Job Completion History"}
+              {activeTab === "stats" && "Performance Analytics"}
+            </h1>
+            <p className="text-xs text-gray-500 font-medium">
+              Manage your active tasks and update their status.
+            </p>
           </div>
         </header>
 
@@ -160,7 +165,7 @@ const StaffDashboard: React.FC = () => {
                   No tasks assigned yet.
                 </p>
               )}
-              
+
               {jobs.map((job) => (
                 <div
                   key={job.id}
@@ -170,7 +175,7 @@ const StaffDashboard: React.FC = () => {
                   <div className="flex justify-between mb-6">
                     <span
                       className={`px-4 py-1 text-[10px] font-black uppercase rounded-xl border ${getStatusColor(
-                        job.status
+                        job.status,
                       )}`}
                     >
                       {job.status.replace("_", " ")}
@@ -194,19 +199,21 @@ const StaffDashboard: React.FC = () => {
 
                   {/* Customer Box */}
                   <div className="bg-blue-50/30 p-6 rounded-3xl border border-blue-50">
-                      <div className="flex items-center justify-between mb-6">
-                        <div className="flex items-center gap-4">
-                          <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-sm text-blue-600 border border-blue-100 text-lg">
-                            <i className="fas fa-user"></i>
-                          </div>
-                          <div>
-                            <p className="text-[10px] text-gray-400 font-black uppercase tracking-widest leading-none mb-1">Customer</p>
-                    <p className="font-bold text-blue-900">
-                      {job.customer_name}
-                    </p>
-                          </div>
+                    <div className="flex items-center justify-between mb-6">
+                      <div className="flex items-center gap-4">
+                        <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-sm text-blue-600 border border-blue-100 text-lg">
+                          <i className="fas fa-user"></i>
                         </div>
+                        <div>
+                          <p className="text-[10px] text-gray-400 font-black uppercase tracking-widest leading-none mb-1">
+                            Customer
+                          </p>
+                          <p className="font-bold text-blue-900">
+                            {job.customer_name}
+                          </p>
                         </div>
+                      </div>
+                    </div>
 
                     <div className="flex gap-4">
                       {/* Call */}
@@ -216,17 +223,15 @@ const StaffDashboard: React.FC = () => {
                       >
                         <i className="fas fa-phone"></i>
                       </a>
-                      
 
                       {/* Navigation-Map*/}
-                      
-                        <button className="flex-1 bg-blue-600 text-white py-3.5 rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-lg shadow-blue-500/20 hover:bg-blue-700 transition-all">
-                          Start Navigation
-                        </button>
-                        
+
+                      <button className="flex-1 bg-blue-600 text-white py-3.5 rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-lg shadow-blue-500/20 hover:bg-blue-700 transition-all">
+                        Start Navigation
+                      </button>
 
                       {/* Notes */}
-                     
+
                       <button
                         onClick={() =>
                           setSelectedNotes(job.notes || "No notes added.")
@@ -237,27 +242,23 @@ const StaffDashboard: React.FC = () => {
                       </button>
                     </div>
 
-                  {/* Complete */}
-                  <br></br>
-                  <div className="flex gap-4">
-                  <button
-                    onClick={() => markCompleted(job.id)}
-                    className="w-full bg-green-500 text-white py-4 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-green-600 transition-all shadow-lg shadow-green-500/20"
-                  >
-                    Mark as Completed
-                  </button>
+                    {/* Complete */}
+                    <br></br>
+                    <div className="flex gap-4">
+                      <button
+                        onClick={() => markCompleted(job.id)}
+                        className="w-full bg-green-500 text-white py-4 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-green-600 transition-all shadow-lg shadow-green-500/20"
+                      >
+                        Mark as Completed
+                      </button>
+                    </div>
                   </div>
-            </div>
-          </div>
+                </div>
               ))}
-
-              
-              </div>
-
-            ) 
-}
+            </div>
+          )}
+        </div>
       </div>
-    </div>
 
       {/* ---------------- NOTES MODAL ---------------- */}
       {selectedNotes && (
@@ -275,8 +276,8 @@ const StaffDashboard: React.FC = () => {
           </div>
         </div>
       )}
-  </div>
-);
+    </div>
+  );
 };
 
 export default StaffDashboard;
