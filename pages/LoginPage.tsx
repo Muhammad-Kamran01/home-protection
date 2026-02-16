@@ -54,6 +54,10 @@ const LoginPage: React.FC = () => {
       const role = profile.role as UserRole;
       console.log('5. Navigating with role:', role);
       
+      // Refresh Auth Context FIRST
+      await refreshUser();
+      setLoading(false);
+      // Then navigate
       if (role === UserRole.ADMIN) {
         navigate('/admin', { replace: true });
       } else if (role === UserRole.STAFF) {
