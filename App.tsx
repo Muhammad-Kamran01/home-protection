@@ -23,6 +23,7 @@ import CustomerDashboard from "./pages/customer/CustomerDashboard";
 // Components
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import Whatsapp from './components/Whatsapp';
 
 // Auth Context
 interface AuthContextType {
@@ -347,6 +348,7 @@ const App: React.FC = () => {
             {/* Default Catch-all */}
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
+          <Whatsapp/>
         </div>
       </Router>
     </AuthProvider>
