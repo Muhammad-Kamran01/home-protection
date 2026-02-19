@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
+import logo from '../assets/logo.png';
 
 const Footer: React.FC = () => {
   return (
@@ -9,9 +10,9 @@ const Footer: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           {/* Brand */}
           <div className="space-y-6">
-            <Link to="/" className="flex items-center gap-3">
-              <div className="bg-blue-600 p-2 rounded-lg text-white">
-                <i className="fas fa-shield-alt text-xl"></i>
+            <Link to="/" className="flex items-center gap-0">
+              <div className="p-2 rounded-lg text-white">
+                <img src={logo} alt="Home Protection" className="w-10 h-10 object-contain rounded-md" />
               </div>
               <span className="text-2xl font-bold text-white">Home Protection</span>
             </Link>

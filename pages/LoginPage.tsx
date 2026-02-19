@@ -4,6 +4,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { supabase } from '../supabase';
 import { useAuth } from '../App';
 import { UserRole } from '../types';
+import logo from '../assets/logo.png';
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -76,9 +77,9 @@ const LoginPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center items-center px-4 pt-6 pb-12">
-      <Link to="/" className="mb-8 flex items-center gap-3">
-        <div className="bg-blue-600 p-2 rounded-lg text-white">
-          <i className="fas fa-shield-alt text-2xl"></i>
+      <Link to="/" className="mb-8 flex items-center gap-0">
+        <div className="p-2 rounded-lg text-white">
+          <img src={logo} alt="Home Protection" className="w-10 h-10 object-contain rounded-md" />
         </div>
         <span className="text-2xl font-bold text-blue-900">Home Protection</span>
       </Link>

@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../App';
 import { UserRole } from '../types';
+import logo from '../assets/logo.png';
 
 const Navbar: React.FC = () => {
   const { user, signOut } = useAuth();
@@ -32,9 +33,9 @@ const Navbar: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-20">
           <div className="flex items-center">
-            <Link to="/" className="flex-shrink-0 flex items-center gap-2">
-              <div className="bg-blue-600 p-2 rounded-lg text-white">
-                <i className="fas fa-shield-alt text-2xl"></i>
+            <Link to="/" className="flex-shrink-0 flex items-center gap-0">
+              <div className="p-3 rounded-lg text-white flex items-center justify-center">
+                <img src={logo} alt="Home Protection" className="w-16 h-16 object-contain" />
               </div>
               <div className="flex flex-col">
                 <span className="text-xl font-bold text-blue-900 leading-tight">Home Protection</span>
