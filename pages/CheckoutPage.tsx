@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { supabase } from '../supabase';
+import { useAuth } from '../App';
 
 const CheckoutPage: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const authContext = useAuth();
+  const user = authContext?.user || null;
   const state = (location.state || {}) as any;
   const { service, customer } = state;
 
@@ -14,27 +17,11 @@ const CheckoutPage: React.FC = () => {
   const handleConfirm = async () => {
     setProcessing(true);
     try {
-      // Try to persist booking to `bookings` table if available
-      if (supabase) {
-        const { error } = await supabase.from('bookings').insert([{ 
-          service_id: service?.id || null, 
-          customer_name: customer?.name || null, 
-          customer_email: customer?.email || null, 
-          customer_phone: customer?.phone || null, 
-          preferred_date: customer?.preferredDate || null, 
-          notes: customer?.notes || null,
-          address: customer?.address || null,
-          total_amount: service?.discount_price || null,
-          status: 'pending' }]);
-        if (error) {
-          console.warn('Could not save booking:', error.message);
-        }
-      }
-
       // Step 1: Insert into bookings table
-        const { data: booking, error: bookingError } = await supabase
+      const { data: booking, error: bookingError } = await supabase
         .from('bookings')
         .insert([{
+          user_id: user?.id || null,
           service_id: service.id,
           customer_name: customer.name,
           customer_email: customer.email,
@@ -44,32 +31,32 @@ const CheckoutPage: React.FC = () => {
           address: customer.address || '',
           total_amount: service.discount_price || 0,
           status: 'pending',
-          created_at: new Date().toISOString() // optional
-      }])
-      .select()
-      .single();
+          created_at: new Date().toISOString()
+        }])
+        .select()
+        .single();
 
-    if (bookingError) {
-      console.error('Booking insert failed:', bookingError);
-      setMessage('Failed to save booking. Please try again.');
-      return;
-    }
-
-    // Step 2: Insert into booking_items table
-    if (booking) {
-      const { error: itemError } = await supabase
-        .from('booking_items')
-        .insert([{
-          booking_id: booking.id,
-          service_id: service.id,
-          quantity: 1,
-          price_at_booking: service.discount_price
-        }]);
-
-      if (itemError) {
-        console.warn('Booking items insert failed:', itemError);
+      if (bookingError) {
+        console.error('Booking insert failed:', bookingError);
+        setMessage('Failed to save booking. Please try again.');
+        return;
       }
-    }
+
+      // Step 2: Insert into booking_items table
+      if (booking) {
+        const { error: itemError } = await supabase
+          .from('booking_items')
+          .insert([{
+            booking_id: booking.id,
+            service_id: service.id,
+            quantity: 1,
+            price_at_booking: service.discount_price
+          }]);
+
+        if (itemError) {
+          console.warn('Booking items insert failed:', itemError);
+        }
+      }
 
       setMessage('Booking confirmed! We will contact you shortly.');
       setTimeout(() => navigate('/'), 2500);
@@ -106,23 +93,27 @@ const CheckoutPage: React.FC = () => {
             </div>
             <div className="text-right">
               <div className="text-sm text-gray-500">Price</div>
-              <div className="text-lg font-bold text-blue-600">PKR {service.discount_price}</div>
+              {(service.show_price ?? true) ? (
+                <div className="text-lg font-bold text-blue-600">PKR {service.discount_price}</div>
+              ) : (
+                <div className="text-sm text-gray-600 italic">Contact for pricing</div>
+              )}
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-            <div>
-              <p className="text-xs text-gray-500">Customer</p>
-              <p className="font-medium">{customer.name}</p>
-              <p className="text-sm text-gray-500">{customer.email} · {customer.phone}</p>
+          <div className="flex items-start justify-between gap-6 mb-6 p-4 bg-blue-50 rounded-xl border border-blue-100">
+            <div className="flex-1">
+              <p className="text-xs text-gray-500 uppercase font-semibold">Customer</p>
+              <p className="font-bold text-gray-900">{customer.name}</p>
+              <p className="text-sm text-gray-600">{customer.email} · {customer.phone}</p>
             </div>
-            <div>
-              <p className="text-xs text-gray-500">Selected Date</p>
-              <p className="font-medium">{customer.preferredDate || 'Anytime'}</p>
+            <div className="flex-1">
+              <p className="text-xs text-gray-500 uppercase font-semibold">Address</p>
+              <p className="font-bold text-gray-900">{customer.address || 'Not provided'}</p>
             </div>
-            <div>
-              <p className="text-xs text-gray-500">Address</p>
-              <p className="font-medium">{customer.address || 'Not provided'}</p>
+            <div className="text-right border-l border-blue-200 pl-6">
+              <p className="text-xs text-gray-500 uppercase font-semibold">Selected Date</p>
+              <p className="font-bold text-lg text-blue-600">{customer.preferredDate || 'Anytime'}</p>
             </div>
           </div>
 

@@ -12,7 +12,7 @@ const BookingManagement: React.FC = () => {
     setLoading(true);
     const { data, error } = await supabase
       .from("bookings")
-      .select("*")
+      .select("*, services(*)")
       .order("created_at", { ascending: false });
 
     if (error) {
@@ -56,7 +56,7 @@ const BookingManagement: React.FC = () => {
       <h3 className="font-bold text-2xl text-blue-900">Live Bookings</h3>
       <div className="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
         <table className="w-full text-left">
-          <thead className="bg-gray-50 text-[10px] uppercase font-black tracking-widest text-gray-400">
+          <thead className="bg-gray-50 text-[10px] uppercase font-black tracking-widest text-gray-400 text-center">
             <tr>
               <th className="px-8 py-4">Customer</th>
               <th className="px-8 py-4">Service Details</th>
@@ -70,24 +70,41 @@ const BookingManagement: React.FC = () => {
               <tr key={b.id} className="hover:bg-gray-50/50">
                 <td className="px-8 py-6">
                   <p className="font-bold text-blue-900">
-                    {b.profiles?.full_name || "Not Registered"}
+                    {(b.profiles?.full_name || b.customer_name)}
                   </p>
-                  <p className="text-xs text-gray-400">{b.profiles?.phone}</p>
+                  <p className="text-xs text-gray-400">{b.profiles?.phone || b.contact_number}</p>
                 </td>
                 <td className="px-8 py-6">
+                  <p className="text-xs font-bold text-blue-600">{b.services?.name}</p>
                   <p className="text-sm text-gray-600">{b.address}</p>
-                  <p className="text-xs font-bold text-blue-600">
-                    PKR {b.total_amount}
-                  </p>
                 </td>
-                <td className="px-8 py-6 text-sm text-gray-500">
-                  {new Date(b.scheduled_at).toLocaleDateString()}
+                <td className="px-8 py-6">
+                {/* Assign Staff */}
+                  <select
+                    value={b.assigned_staff || ""}
+                    onChange={(e) => assignStaff(b.id, e.target.value)}
+                    className="text-[10px] font-black uppercase tracking-widest bg-gray-50 border border-gray-100 rounded-xl px-3 py-2 outline-none focus:ring-2 focus:ring-blue-600 transition-all w-full max-w-[150px] cursor-pointer"
+                  >
+                    <option value="">Assign Staff</option>
+
+                    {staffList.map((staff) => (
+                      <option key={staff.id} value={staff.id}>
+                        {staff.full_name}
+                      </option>
+                    ))}
+                  </select>
                 </td>
                 <td className="px-8 py-6">
                   <select
                     value={b.status}
                     onChange={(e) => updateStatus(b.id, e.target.value)}
-                    className="text-xs font-bold bg-gray-50 border-none rounded-lg px-2 py-1 outline-none"
+                    className={`text-[9px] font-black uppercase tracking-widest rounded-lg px-3 py-1.5 outline-none border cursor-pointer transition-all ${
+                        b.status === 'completed' ? 'bg-green-100 text-green-700 border-green-200' : 
+                        b.status === 'pending' ? 'bg-yellow-100 text-yellow-700 border-yellow-200' :
+                        b.status === 'cancelled' ? 'bg-red-100 text-red-700 border-red-200' :
+                        b.status === 'in_progress' ? 'bg-orange-100 text-orange-700 border-orange-200'
+                        : 'bg-gray-100 text-gray-700 border-gray-200'
+                    }`}
                   >
                     <option value="pending">Pending</option>
                     <option value="in_progress">In Progress</option>
@@ -103,21 +120,6 @@ const BookingManagement: React.FC = () => {
                   >
                     Details
                   </button>
-
-                  {/* Assign Staff */}
-                  <select
-                    value={b.assigned_staff || ""}
-                    onChange={(e) => assignStaff(b.id, e.target.value)}
-                    className="text-xs bg-gray-50 border rounded px-2 py-1 w-full"
-                  >
-                    <option value="">Assign Staff</option>
-
-                    {staffList.map((staff) => (
-                      <option key={staff.id} value={staff.id}>
-                        {staff.full_name}
-                      </option>
-                    ))}
-                  </select>
                 </td>
               </tr>
             ))}
@@ -132,6 +134,15 @@ const BookingManagement: React.FC = () => {
               </h3>
 
               <div className="space-y-2 text-sm text-gray-700">
+                <div>
+                  <strong>Service:</strong>{" "}
+                  {selectedBooking.services?.name || "Unknown Service"}
+                  {selectedBooking.services?.description ? (
+                    <p className="text-xs text-gray-500 mt-1">
+                      {selectedBooking.services.description}
+                    </p>
+                  ) : null}
+                </div>
                 <p>
                   <strong>Customer:</strong>{" "}
                   {selectedBooking.profiles?.full_name || "Not Registered"}

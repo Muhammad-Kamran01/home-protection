@@ -7,6 +7,7 @@ import { User, UserRole } from "./types";
 // Pages
 import HomePage from "./pages/HomePage";
 import ServicesPage from "./pages/ServicesPage";
+import ServiceDetailsPage from "./pages/ServiceDetailsPage";
 import AboutPage from "./pages/AboutPage";
 import ContactPage from "./pages/ContactPage";
 import CareersPage from "./pages/CareersPage";
@@ -14,6 +15,8 @@ import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import BookingPage from "./pages/BookingPage";
 import CheckoutPage from "./pages/CheckoutPage";
+import ForgotPasswordPage from "./pages/ForgotPasswordPage";
+import ResetPasswordPage from "./pages/ResetPasswordPage";
 
 // Dashboards
 import AdminDashboard from "./pages/admin/AdminDashboard";
@@ -249,6 +252,16 @@ const App: React.FC = () => {
               }
             />
             <Route
+              path="/service-details"
+              element={
+                <>
+                  <Navbar />
+                  <ServiceDetailsPage />
+                  <Footer />
+                </>
+              }
+            />
+            <Route
               path="/about"
               element={
                 <>
@@ -314,6 +327,26 @@ const App: React.FC = () => {
                 <>
                   <Navbar />
                   <SignupPage />
+                  <Footer />
+                </>
+              }
+            />
+            <Route
+              path="/forgot-password"
+              element={
+                <>
+                  <Navbar />
+                  <ForgotPasswordPage />
+                  <Footer />
+                </>
+              }
+            />
+            <Route
+              path="/reset-password"
+              element={
+                <>
+                  <Navbar />
+                  <ResetPasswordPage />
                   <Footer />
                 </>
               }

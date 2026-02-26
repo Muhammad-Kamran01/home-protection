@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '../supabase';
 import { ServiceCategory, Review } from '../types';
+import logo from '../assets/logo.png';
 
 const HomePage: React.FC = () => {
   const [categories, setCategories] = useState<ServiceCategory[]>([]);
@@ -149,7 +150,7 @@ const HomePage: React.FC = () => {
                 Our protector is coming at your home. We have experts to take care of your home. We provide services in the given time. Ensure the standards and security of the home. Special care is taken to ensure that the honor of the family is not damaged during the work.
               </p>
               <p className="text-gray-600 text-lg mb-8 leading-relaxed" style={{textAlign: 'justify'}}>
-                Our first priority is that your beloved home always remains magnificent and lasts for a long time. Our consultants provide the best advice to save your money and time. Because we know that you have built it with great love. The problem of your home is not only yours——it is also ours, which we solve with 25 years of experience.
+                Our first priority is that your beloved home always remains magnificent and lasts for a long time. Our consultants provide the best advice to save your money and time. Because we know that you have built it with great love. The problem of your home is not only yours — it is also ours, which we solve with 20 years of experience.
               </p>
               <ul className="space-y-4 mb-10">
                 {['Quality Workmanship Guaranteed', 'Transparent Pricing with No Hidden Costs', 'Background-checked & Certified Pros'].map((item, idx) => (
@@ -191,6 +192,39 @@ const HomePage: React.FC = () => {
               <h3 className="text-xl font-bold mb-4">Rest of Pakistan</h3>
               <p className="text-gray-500 mb-6">Consultancy and remote support available nationwide.</p>
               <span className="bg-gray-100 text-gray-700 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest">Future Phase</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* For Logo Visibility*/}
+      <section className="py-24 bg-white overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col lg:flex-row items-center gap-16">
+            <div className="lg:w-1/2">
+              <h2 className="text-4xl font-extrabold text-blue-900 mb-8" style={{textAlign: 'center'}}>
+                A Name You Can Trust for Maintaining Your Home's Integrity
+              </h2>
+              <p className="text-gray-600 text-lg mb-8 leading-relaxed" style={{textAlign: 'justify'}}>
+                For over 20 years, we have protected homes with integrity, skill, and respect. Our reputation is built on consistent quality, honest work, and long-term relationships. Every home we serve is treated as our own — with care, professionalism, and responsibility.
+              </p>
+              <ul className="space-y-4 mb-10">
+                {['Reliable & On-Time Service', '20+ Years of Proven Experience', 'Honest Advice & Long-Term Solutions'].map((item, idx) => (
+                  <li key={idx} className="flex items-center gap-3 text-blue-900 font-semibold">
+                    <i className="fas fa-check-circle text-blue-600"></i>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+              <Link to="/about" className="text-blue-600 font-bold flex items-center gap-2 hover:gap-4 transition-all">
+                Learn more about us <i className="fas fa-chevron-right text-sm"></i>
+              </Link>
+            </div>
+
+            <div className="lg:w-1/2 relative">
+              <div className="relative rounded-3xl overflow-hidden shadow-2xl">
+                <img src={logo} alt="Home Protection" className="w-full h-[500px] object-cover" />
+              </div>
             </div>
           </div>
         </div>

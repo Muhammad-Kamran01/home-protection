@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import logo from '../assets/logo.png';
 
 const AboutPage: React.FC = () => {
   return (
@@ -11,7 +12,7 @@ const AboutPage: React.FC = () => {
         </div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
           <h1 className="text-5xl font-black text-white mb-6">Built on Trust & Excellence</h1>
-          <p className="text-xl text-blue-100 max-w-3xl mx-auto">Providing professional maintenance solutions since 2020. Our mission is to protect every home with quality workmanship.</p>
+          <p className="text-xl text-blue-100 max-w-3xl mx-auto">Providing professional maintenance solutions since 2005. Our mission is to protect every home with quality workmanship.</p>
         </div>
       </section>
 
@@ -63,12 +64,12 @@ const AboutPage: React.FC = () => {
       <section className="py-20">
         <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 mb-6">About Us</h2>
-            <p className="text-gray-600 text-lg leading-relaxed mb-6">
-              Home Protection was founded on a simple premise: home maintenance should be stress-free, transparent, and professional. In a market often characterized by unreliability, we set out to build a platform where quality is guaranteed.
+            <h2 className="text-3xl font-bold text-gray-900 mb-6" style={{textAlign: 'center'}}>About Us</h2>
+            <p className="text-gray-600 text-lg leading-relaxed mb-6" style={{textAlign: 'justify'}}>
+              Home Protection was founded on a simple premise. The home maintenance should be stress-free, transparent, and professional. In a market often characterized by unreliability, we set out to build a platform where quality is guaranteed.
             </p>
-            <p className="text-gray-600 text-lg leading-relaxed mb-8">
-              We leverage modern technology and a strictly vetted workforce to ensure that when you book a "Protector", you get the best in the business.
+            <p className="text-gray-600 text-lg leading-relaxed mb-8" style={{textAlign: 'justify'}}>
+              We leverage modern technology and a strictly vetted workforce to ensure that when you book a protector, you get the best in the business.
             </p>
             <div className="grid grid-cols-2 gap-6">
               <div className="border-l-4 border-blue-600 pl-4">
@@ -108,6 +109,38 @@ const AboutPage: React.FC = () => {
                 <p className="text-gray-500 leading-relaxed">{item.text}</p>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* For Logo Visibility*/}
+      <section className="py-24 bg-white overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col lg:flex-row items-center gap-16">
+            <div className="lg:w-1/2 relative">
+              <div className="relative rounded-3xl overflow-hidden shadow-2xl">
+                <img src={logo} alt="Home Protection" className="w-full h-[500px] object-cover" />
+              </div>
+            </div>
+            <div className="lg:w-1/2">
+              <h2 className="text-4xl font-extrabold text-blue-900 mb-8" style={{textAlign: 'center'}}>
+                Where Experience Meets Protection
+              </h2>
+              <p className="text-gray-600 text-lg mb-8 leading-relaxed" style={{textAlign: 'justify'}}>
+                Your home deserves more than quick fixes — it deserves lasting protection. For over 20 years, we’ve combined craftsmanship, experience, and integrity to safeguard what matters most. Every project is handled with precision, transparency, and a deep respect for your space. Our name stands for dependable service, honest communication, and results that endure season after season. When you choose us, you’re choosing proven expertise, on-time performance, and a team that protects your home like it’s our own legacy.
+              </p>
+              <ul className="space-y-4 mb-10">
+                {['Reliable & On-Time Service', '20+ Years of Proven Experience', 'Honest Advice & Long-Term Solutions'].map((item, idx) => (
+                  <li key={idx} className="flex items-center gap-3 text-blue-900 font-semibold">
+                    <i className="fas fa-check-circle text-blue-600"></i>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+              <Link to="/contact" className="text-blue-600 font-bold flex items-center gap-2 hover:gap-4 transition-all">
+                If you're interested in learning more about our services, click here <i className="fas fa-chevron-right text-sm"></i>
+              </Link>
+            </div>
           </div>
         </div>
       </section>

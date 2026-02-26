@@ -126,7 +126,7 @@ const LoginPage: React.FC = () => {
               <input type="checkbox" className="w-4 h-4 rounded text-blue-600 focus:ring-blue-500" />
               <span className="text-sm text-gray-600 group-hover:text-blue-600 transition-colors">Remember me</span>
             </label>
-            <Link to="/forgot-password" title="Coming soon" className="text-sm text-blue-600 font-bold hover:underline">Forgot password?</Link>
+            <Link to="/forgot-password" className="text-sm text-blue-600 font-bold hover:underline">Forgot password?</Link>
           </div>
 
           <button 

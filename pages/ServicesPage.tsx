@@ -33,9 +33,9 @@ const ServicesPage: React.FC = () => {
         setCategories(dummyCats);
 
         const dummyServs: Service[] = [
-          { id: '1', category_id: '1', name: 'AC Installation', description: 'Full unit installation with gas refilling.', image_url: 'https://images.unsplash.com/photo-1581094794329-c8112a89af12?q=80&w=2070&auto=format&fit=crop', marked_price: 5000, discount_price: 3500, is_active: true },
-          { id: '2', category_id: '1', name: 'AC Maintenance', description: 'Routine servicing and deep cleaning.', image_url: 'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?q=80&w=2069&auto=format&fit=crop', marked_price: 7000, discount_price: 5000, is_active: true },
-          { id: '3', category_id: '2', name: 'Home Wiring', description: 'Full electrical circuit checkup.', image_url: 'https://images.unsplash.com/photo-1558210857-393f8992d27c?q=80&w=2070&auto=format&fit=crop', marked_price: 10000, discount_price: 7000, is_active: true },
+          { id: '1', category_id: '1', name: 'AC Installation', description: 'Full unit installation with gas refilling.', image_url: 'https://images.unsplash.com/photo-1581094794329-c8112a89af12?q=80&w=2070&auto=format&fit=crop', marked_price: 5000, discount_price: 3500, is_active: true, show_price: true },
+          { id: '2', category_id: '1', name: 'AC Maintenance', description: 'Routine servicing and deep cleaning.', image_url: 'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?q=80&w=2069&auto=format&fit=crop', marked_price: 7000, discount_price: 5000, is_active: true, show_price: true },
+          { id: '3', category_id: '2', name: 'Home Wiring', description: 'Full electrical circuit checkup.', image_url: 'https://images.unsplash.com/photo-1558210857-393f8992d27c?q=80&w=2070&auto=format&fit=crop', marked_price: 10000, discount_price: 7000, is_active: true, show_price: true },
         ];
         setServices(dummyServs);
       }
@@ -47,7 +47,13 @@ const ServicesPage: React.FC = () => {
   const filteredServices = services.filter(s => {
     const matchesCat = activeCategoryId === 'all' || s.category_id === activeCategoryId;
     const matchesSearch = s.name.toLowerCase().includes(searchTerm.toLowerCase());
-    return matchesCat && matchesSearch;
+    
+    // Filter out services where show_price is true but prices are not set
+    const showPriceEnabled = s.show_price ?? true;
+    const hasPrices = s.discount_price > 0 && s.marked_price > 0;
+    const isValidForDisplay = showPriceEnabled ? hasPrices : true;
+    
+    return matchesCat && matchesSearch && isValidForDisplay;
   });
 
   return (
@@ -111,31 +117,48 @@ const ServicesPage: React.FC = () => {
             ) : (
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {filteredServices.length > 0 ? filteredServices.map((service) => (
-                  <div key={service.id} className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all group">
-                    <div className="relative h-48 overflow-hidden">
-                      <img src={service.image_url} alt={service.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-                      {service.marked_price > service.discount_price && (
+                  <div key={service.id} className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all group flex flex-col h-full">
+                    <div className="relative h-48 overflow-hidden bg-gray-100">
+                      {service.image_url ? (
+                        <img src={service.image_url} alt={service.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-50 to-blue-100">
+                          <i className="fas fa-image text-gray-300 text-5xl"></i>
+                        </div>
+                      )}
+                      {(service.show_price ?? true) && service.marked_price > service.discount_price && (
                         <div className="absolute top-4 right-4 bg-red-600 text-white px-3 py-1 rounded-lg text-xs font-black uppercase tracking-widest shadow-lg">
                           Save PKR {service.marked_price - service.discount_price}
                         </div>
                       )}
                     </div>
-                    <div className="p-6">
+                    <div className="p-6 flex flex-col flex-grow">
                       <h3 className="text-xl font-bold text-blue-900 mb-2">{service.name}</h3>
                       <p className="text-gray-500 text-sm mb-6 line-clamp-2">{service.description}</p>
                       
-                      <div className="flex items-center justify-between mb-6">
-                        <div className="flex flex-col">
-                          <span className="text-2xl font-black text-blue-600">PKR {service.discount_price}</span>
-                          {service.marked_price > service.discount_price && (
-                            <span className="text-xs text-gray-400 line-through">PKR {service.marked_price}</span>
-                          )}
+                      {(service.show_price ?? true) ? (
+                        <div className="flex items-center justify-between mb-6">
+                          <div className="flex flex-col">
+                            <span className="text-2xl font-black text-blue-600">PKR {service.discount_price}</span>
+                            {service.marked_price > service.discount_price && (
+                              <span className="text-xs text-gray-400 line-through">PKR {service.marked_price}</span>
+                            )}
+                          </div>
                         </div>
-                      </div>
+                      ) : (
+                        <div className="mb-6">
+                          <p className="text-sm text-gray-500 font-semibold italic">Contact us for pricing</p>
+                        </div>
+                      )}
 
-                      <button onClick={() => navigate(`/booking?service=${service.id}`)} className="w-full bg-blue-600 text-white py-3 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-blue-700 transition-colors shadow-lg shadow-blue-100">
-                        <i className="fas fa-calendar-check"></i> Book Now
-                      </button>
+                      <div className="flex gap-3 mt-auto">
+                        <button onClick={() => navigate(`/service-details?id=${service.id}`)} className="flex-1 border-2 border-blue-600 text-blue-600 py-3 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-blue-50 transition-colors">
+                          Details
+                        </button>
+                        <button onClick={() => navigate(`/booking?service=${service.id}`)} className="flex-1 bg-blue-600 text-white py-3 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-blue-700 transition-colors shadow-lg shadow-blue-100">
+                          Book Now
+                        </button>
+                      </div>
                     </div>
                   </div>
                 )) : (

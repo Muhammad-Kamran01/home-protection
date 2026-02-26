@@ -30,17 +30,22 @@ export interface Service {
   marked_price: number;
   discount_price: number;
   is_active: boolean;
+  show_price?: boolean;
   category?: ServiceCategory;
 }
 
 export interface Booking {
   id: string;
-  user_id: string;
+  user_id?: string;
+  service_id: string;
+  customer_name: string;
+  customer_email: string;
   status: 'pending' | 'in_progress' | 'completed' | 'cancelled';
   total_amount: number;
   scheduled_at: string;
   address: string;
   contact_number: string;
+  notes?: string;
   created_at: string;
   customer?: User;
 }

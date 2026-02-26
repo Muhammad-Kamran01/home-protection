@@ -1,7 +1,9 @@
 
 import React, { useState, useEffect } from 'react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { useNavigate } from 'react-router-dom';
 import { supabase } from '../../supabase';
+import { text } from 'stream/consumers';
 
 interface StatsState {
   totalRevenue: number;
@@ -13,6 +15,7 @@ interface StatsState {
 }
 
 const AdminStats: React.FC = () => {
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState<StatsState>({
     totalRevenue: 0,
@@ -29,7 +32,7 @@ const AdminStats: React.FC = () => {
       // 1. Fetch Bookings for Revenue, Counts, and Pending Status
       const { data: bookings, error: bError } = await supabase
         .from('bookings')
-        .select('total_amount, created_at, status');
+        .select('total_amount, created_at, status, customer_name');
       
       if (bError) throw bError;
 
@@ -65,11 +68,11 @@ const AdminStats: React.FC = () => {
           pendingCount++;
         }
         
-        // Prepare Chart Data
+        // Prepare Chart Data - Count Bookings per Month
         const date = new Date(b.created_at);
         const mName = months[date.getMonth()];
         if (monthlyData[mName] !== undefined) {
-          monthlyData[mName] += (b.total_amount || 0);
+          monthlyData[mName] += 1;
         }
       });
 
@@ -81,7 +84,11 @@ const AdminStats: React.FC = () => {
       // Get 5 most recent bookings for the feed
       const recent = [...(bookings || [])]
         .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
-        .slice(0, 5);
+        .slice(0, 5)
+        .map(b => ({
+          ...b,
+          profiles: { full_name: b.customer_name || 'Anonymous' }
+        }));
 
       setStats({
         totalRevenue: revenue,
@@ -108,7 +115,7 @@ const AdminStats: React.FC = () => {
 
   const cardItems = [
     { label: 'Total Revenue', value: `PKR ${stats.totalRevenue.toLocaleString()}`, icon: 'fa-wallet', color: 'bg-green-500', change: 'Live' },
-    { label: 'Total Bookings', value: stats.totalBookings.toString(), icon: 'fa-calendar-check', color: 'bg-blue-50', iconColor: 'text-blue-600', change: 'Total' },
+    { label: 'Total Bookings', value: stats.totalBookings.toString(), icon: 'fa-calendar-check', color: 'bg-blue-500', iconColor: 'text-blue-600', change: 'Total' },
     { label: 'Pending Orders', value: stats.pendingOrders.toString(), icon: 'fa-hourglass-half', color: 'bg-orange-500', change: 'To Do' },
     { label: 'Pending Apps', value: stats.pendingApplications.toString(), icon: 'fa-user-clock', color: 'bg-yellow-500', change: 'Review' },
   ];
@@ -145,7 +152,7 @@ const AdminStats: React.FC = () => {
         {/* Revenue Chart */}
         <div className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100">
           <div className="flex items-center justify-between mb-8">
-            <h3 className="font-black text-blue-900 uppercase tracking-tight">Revenue Trend</h3>
+            <h3 className="font-black text-blue-900 uppercase tracking-tight">Booking Trend</h3>
             <div className="flex items-center gap-2 text-[10px] font-black text-green-500 bg-green-50 px-3 py-1 rounded-full uppercase tracking-widest">
               <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></div>
               Real-time
@@ -165,7 +172,7 @@ const AdminStats: React.FC = () => {
                 <YAxis axisLine={false} tickLine={false} tick={{fill: '#9ca3af', fontSize: 10, fontWeight: 700}} />
                 <Tooltip 
                   contentStyle={{borderRadius: '16px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)', fontWeight: 700}} 
-                  formatter={(value: any) => [`PKR ${value.toLocaleString()}`, 'Revenue']}
+                  formatter={(value: any) => [value.toLocaleString(), 'Bookings']}
                 />
                 <Area type="monotone" dataKey="value" stroke="#2563eb" strokeWidth={3} fillOpacity={1} fill="url(#colorValue)" />
               </AreaChart>
@@ -175,7 +182,7 @@ const AdminStats: React.FC = () => {
 
         {/* Recent Activity Feed */}
         <div className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 flex flex-col">
-          <h3 className="font-black text-blue-900 uppercase tracking-tight mb-8">Recent Operations</h3>
+          <h3 className="font-black text-blue-900 uppercase tracking-tight mb-8" style={{textAlign: 'center'}}>Recent Bookings</h3>
           <div className="flex-1 space-y-6">
             {stats.recentBookings.map((b, i) => (
               <div key={i} className="flex items-center justify-between py-3 border-b border-gray-50 last:border-0 hover:bg-gray-50/50 transition-colors px-2 rounded-xl">
@@ -185,9 +192,6 @@ const AdminStats: React.FC = () => {
                   </div>
                   <div>
                     <p className="font-black text-sm text-blue-900">{b.profiles?.full_name || 'Anonymous'}</p>
-                    <p className="text-[10px] text-gray-400 font-bold uppercase tracking-tight">
-                      {b.services?.name || 'General Maintenance'} • {new Date(b.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                    </p>
                   </div>
                 </div>
                 <div className="text-right">
@@ -211,7 +215,9 @@ const AdminStats: React.FC = () => {
             )}
           </div>
           <div className="mt-6">
-            <button className="w-full py-4 text-xs font-black uppercase tracking-widest text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-2xl transition-all">
+            <button 
+              onClick={() => navigate('/admin/bookings')}
+              className="w-full py-4 text-xs font-black uppercase tracking-widest text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-2xl transition-all">
               Launch Full Operations Center
             </button>
           </div>

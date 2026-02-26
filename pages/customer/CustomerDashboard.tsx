@@ -26,6 +26,9 @@ const CustomerDashboard: React.FC = () => {
     scheduled_at: '',
     address: '',
     contact_number: user?.phone || '',
+    customer_name: user?.full_name || '',
+    customer_email: user?.email || '',
+    notes: '',
   });
 
   useEffect(() => {
@@ -42,7 +45,7 @@ const CustomerDashboard: React.FC = () => {
   const fetchData = async () => {
     setLoading(true);
     const [bookingsRes, servicesRes, categoriesRes] = await Promise.all([
-      supabase.from('bookings').select('*').eq('user_id', user?.id).order('created_at', { ascending: false }),
+      supabase.from('bookings').select('*, services(id, name, description, discount_price)').eq('user_id', user?.id).order('created_at', { ascending: false }),
       supabase.from('services').select('*, category:service_categories(*)').eq('is_active', true),
       supabase.from('service_categories').select('*')
     ]);
@@ -86,18 +89,22 @@ const CustomerDashboard: React.FC = () => {
     
     const { error } = await supabase.from('bookings').insert([{
       user_id: user?.id,
+      service_id: bookingData.service_id,
+      customer_name: bookingData.customer_name,
+      customer_email: bookingData.customer_email,
       status: 'pending',
       total_amount: selectedService?.discount_price || 0,
       scheduled_at: bookingData.scheduled_at,
       address: bookingData.address,
-      contact_number: bookingData.contact_number
+      contact_number: bookingData.contact_number,
+      notes: bookingData.notes,
     }]);
 
     if (error) {
       alert('Booking failed: ' + error.message);
     } else {
       alert('Service booked successfully!');
-      setBookingData({ ...bookingData, service_id: '', scheduled_at: '', address: '' });
+      setBookingData({ service_id: '', scheduled_at: '', address: '', contact_number: user?.phone || '', customer_name: user?.full_name || '', customer_email: user?.email || '', notes: '' });
       setActiveTab('bookings');
       fetchData();
     }
@@ -111,6 +118,16 @@ const CustomerDashboard: React.FC = () => {
       case 'cancelled': return 'bg-red-100 text-red-700 border-red-200';
       default: return 'bg-yellow-100 text-yellow-700 border-yellow-200';
     }
+  };
+
+  const getServiceName = (booking: any) => {
+    // First try to get from the joined service object
+    if (booking.services?.name) {
+      return booking.services.name;
+    }
+    // Fallback: look up from services array
+    const service = services.find(s => s.id === booking.service_id);
+    return service?.name || 'Unknown Service';
   };
 
   return (
@@ -271,6 +288,7 @@ const CustomerDashboard: React.FC = () => {
                           {b.status}
                         </span>
                       </div>
+                      <h3 className="font-bold text-gray-900">{getServiceName(b)}</h3>
                       <p className="text-sm text-gray-500 mb-1"><i className="fas fa-map-marker-alt text-blue-500 mr-2"></i> {b.address}</p>
                       <p className="text-xs text-gray-400 font-bold uppercase tracking-tighter">Scheduled for: {new Date(b.scheduled_at).toLocaleString()}</p>
                     </div>
@@ -414,6 +432,32 @@ const CustomerDashboard: React.FC = () => {
                       />
                     </div>
                   </div>
+
+                  <div className="grid md:grid-cols-2 gap-8"> 
+                    <div className="space-y-2">
+                      <label className="text-sm font-bold text-gray-700">Full Name</label>
+                      <input 
+                        type="text" 
+                        className="w-full px-6 py-4 rounded-2xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-600 bg-gray-50"
+                        placeholder="Enter your full name"
+                        value={bookingData.customer_name}
+                        onChange={e => setBookingData({...bookingData, customer_name: e.target.value})}
+                        required
+                      />
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <label className="text-sm font-bold text-gray-700">Email Address</label>
+                      <input 
+                        type="email" 
+                        className="w-full px-6 py-4 rounded-2xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-600 bg-gray-50"
+                        placeholder="abc@gmail.com"
+                        value={bookingData.customer_email}
+                        onChange={e => setBookingData({...bookingData, customer_email: e.target.value})}
+                        required
+                      />
+                    </div>
+                  </div>
                   
                   <div className="space-y-2">
                     <label className="text-sm font-bold text-gray-700">Maintenance Address</label>
@@ -427,9 +471,21 @@ const CustomerDashboard: React.FC = () => {
                     />
                   </div>
 
+                  <div className="space-y-2">
+                    <label className="text-sm font-bold text-gray-700">Notes (Optional)</label>
+                    <textarea 
+                      className="w-full px-6 py-4 rounded-2xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-600 bg-gray-50"
+                      rows={3}
+                      placeholder="Any special instructions or notes for the technician..."
+                      value={bookingData.notes}
+                      onChange={e => setBookingData({...bookingData, notes: e.target.value})}
+                      required
+                    />
+                  </div>
+
                   <div className="grid md:grid-cols-2 gap-8">
                     <div className="space-y-2">
-                      <label className="text-sm font-bold text-gray-700">Site Contact Number</label>
+                      <label className="text-sm font-bold text-gray-700">Contact Number</label>
                       <input 
                         type="tel" 
                         className="w-full px-6 py-4 rounded-2xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-600 bg-gray-50"
