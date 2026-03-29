@@ -44,7 +44,7 @@ const HomePage: React.FC = () => {
   return (
     <div className="w-full overflow-hidden">
       {/* Hero Section */}
-      <section className="relative h-[650px] bg-blue-900 flex items-center">
+      <section className="relative min-h-[560px] md:h-[650px] bg-blue-900 flex items-center py-16 md:py-0">
         <div className="absolute inset-0 z-0">
           <img 
             src="https://electrafix.pk/wp-content/uploads/2024/10/Handyman-Services.jpg?q=80&w=2070&auto=format&fit=crop" 
@@ -56,18 +56,18 @@ const HomePage: React.FC = () => {
         
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-white">
           <div className="max-w-2xl">
-            <h1 className="text-5xl md:text-6xl font-extrabold mb-6 leading-tight">
+            <h1 className="text-3xl sm:text-4xl md:text-6xl font-extrabold mb-5 md:mb-6 leading-tight">
               Your Home Deserves <br />
               <span className="text-yellow-400">Professional Protection</span>
             </h1>
-            <p className="text-xl text-gray-200 mb-10 leading-relaxed">
+            <p className="text-base sm:text-lg md:text-xl text-gray-200 mb-8 md:mb-10 leading-relaxed">
               Our protector is coming at your home. We are experts to take care of your home. We provide services in preferred time. Ensure the standards and security of the home.
             </p>
             <div className="flex flex-wrap gap-4">
-              <Link to="/services" className="bg-yellow-400 text-blue-900 px-8 py-4 rounded-xl font-bold text-lg hover:bg-yellow-500 transition-all flex items-center gap-2 group">
+              <Link to="/services" className="w-full sm:w-auto justify-center bg-yellow-400 text-blue-900 px-8 py-4 rounded-xl font-bold text-lg hover:bg-yellow-500 transition-all flex items-center gap-2 group">
                 Explore Services <i className="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
               </Link>
-              <Link to="/contact" className="bg-transparent border-2 border-white/30 hover:border-white text-white px-8 py-4 rounded-xl font-bold text-lg transition-all backdrop-blur-sm">
+              <Link to="/contact" className="w-full sm:w-auto text-center bg-transparent border-2 border-white/30 hover:border-white text-white px-8 py-4 rounded-xl font-bold text-lg transition-all backdrop-blur-sm">
                 Contact Support
               </Link>
             </div>
@@ -89,14 +89,14 @@ const HomePage: React.FC = () => {
       </section>
 
       {/* Stats Section */}
-      <section className="py-12 bg-white relative -mt-10 mx-auto max-w-6xl rounded-2xl shadow-xl z-20">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 px-8">
+      <section className="py-8 sm:py-12 bg-white relative mt-0 md:-mt-10 mx-4 sm:mx-auto max-w-6xl rounded-3xl sm:rounded-2xl shadow-xl z-20">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 px-4 sm:px-8">
           {stats.map((stat, i) => (
             <div key={i} className="text-center space-y-2">
               <div className="text-blue-600 mb-2">
                 <i className={`fas ${stat.icon} text-3xl`}></i>
               </div>
-              <p className="text-3xl font-extrabold text-blue-900">{stat.value}</p>
+              <p className="text-2xl sm:text-3xl font-extrabold text-blue-900">{stat.value}</p>
               <p className="text-gray-500 text-sm font-medium uppercase tracking-wider">{stat.label}</p>
             </div>
           ))}
@@ -104,25 +104,25 @@ const HomePage: React.FC = () => {
       </section>
 
       {/* Categories Section */}
-      <section className="py-24 bg-gray-50">
+      <section className="py-16 md:py-24 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
+          <div className="text-center mb-10 md:mb-16">
             <h4 className="text-blue-600 font-bold uppercase tracking-widest text-sm mb-4">Top Categories</h4>
-            <h2 className="text-4xl font-extrabold text-blue-900 mb-4">Services We Offer</h2>
+            <h2 className="text-3xl md:text-4xl font-extrabold text-blue-900 mb-4">Services We Offer</h2>
             <div className="h-1.5 w-24 bg-blue-600 mx-auto rounded-full"></div>
           </div>
 
-          <div className="grid grid-cols-2 lg:grid-cols-6 gap-6">
+          <div className="grid grid-cols-2 lg:grid-cols-6 gap-4 sm:gap-6">
             {categories.map((cat) => (
               <button 
                 key={cat.id}
                 onClick={() => navigate(`/services?category=${cat.id}`)}
-                className="bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all flex flex-col items-center gap-4 group border border-gray-100"
+                className="bg-white p-5 sm:p-8 rounded-2xl shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all flex flex-col items-center gap-3 sm:gap-4 group border border-gray-100"
               >
                 <div className="w-16 h-16 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition-colors">
                   <i className={`fas ${cat.icon} text-2xl`}></i>
                 </div>
-                <span className="font-bold text-blue-900 group-hover:text-blue-600">{cat.name}</span>
+                <span className="font-bold text-sm sm:text-base text-blue-900 group-hover:text-blue-600 text-center">{cat.name}</span>
               </button>
             ))}
           </div>
@@ -130,12 +130,12 @@ const HomePage: React.FC = () => {
       </section>
 
       {/* Company Introduction */}
-      <section className="py-24 bg-white overflow-hidden">
+      <section className="py-16 md:py-24 bg-white overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col lg:flex-row items-center gap-16">
             <div className="lg:w-1/2 relative">
               <div className="relative rounded-3xl overflow-hidden shadow-2xl">
-                <img src="https://img.freepik.com/premium-photo/male-technician-repairing-air-conditioner-safety-uniform-indoors_61243-423.jpg?q=80&w=2069&auto=format&fit=crop" alt="Quality Service" className="w-full h-[500px] object-cover" />
+                <img src="https://img.freepik.com/premium-photo/male-technician-repairing-air-conditioner-safety-uniform-indoors_61243-423.jpg?q=80&w=2069&auto=format&fit=crop" alt="Quality Service" className="w-full h-[320px] sm:h-[420px] lg:h-[500px] object-cover" />
               </div>
               <div className="absolute -bottom-10 -right-10 bg-yellow-400 p-8 rounded-3xl shadow-xl hidden md:block w-48 text-center">
                 <p className="text-4xl font-black text-blue-900">20+</p>
@@ -143,7 +143,7 @@ const HomePage: React.FC = () => {
               </div>
             </div>
             <div className="lg:w-1/2">
-              <h2 className="text-4xl font-extrabold text-blue-900 mb-8" style={{textAlign: 'center'}}>
+              <h2 className="text-3xl md:text-4xl font-extrabold text-blue-900 mb-6 md:mb-8" style={{textAlign: 'center'}}>
                 Experience the Best Home <br /> Protection Services
               </h2>
               <p className="text-gray-600 text-lg mb-8 leading-relaxed" style={{textAlign: 'justify'}}>
@@ -169,7 +169,7 @@ const HomePage: React.FC = () => {
       </section>
 
       {/* Coverage Areas */}
-      <section className="py-24 bg-blue-50/50">
+      <section className="py-16 md:py-24 bg-blue-50/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-extrabold text-blue-900">Service Coverage Areas</h2>
@@ -198,11 +198,11 @@ const HomePage: React.FC = () => {
       </section>
 
       {/* For Logo Visibility*/}
-      <section className="py-24 bg-white overflow-hidden">
+      <section className="py-16 md:py-24 bg-white overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col lg:flex-row items-center gap-16">
             <div className="lg:w-1/2">
-              <h2 className="text-4xl font-extrabold text-blue-900 mb-8" style={{textAlign: 'center'}}>
+              <h2 className="text-3xl md:text-4xl font-extrabold text-blue-900 mb-6 md:mb-8" style={{textAlign: 'center'}}>
                 A Name You Can Trust for Maintaining Your Home's Integrity
               </h2>
               <p className="text-gray-600 text-lg mb-8 leading-relaxed" style={{textAlign: 'justify'}}>
@@ -223,7 +223,7 @@ const HomePage: React.FC = () => {
 
             <div className="lg:w-1/2 relative">
               <div className="relative rounded-3xl overflow-hidden shadow-2xl">
-                <img src={logo} alt="Home Protection" className="w-full h-[500px] object-cover" />
+                <img src={logo} alt="Home Protection" className="w-full h-[320px] sm:h-[420px] lg:h-[500px] object-cover" />
               </div>
             </div>
           </div>
@@ -231,23 +231,23 @@ const HomePage: React.FC = () => {
       </section>
 
       {/* Mobile App Promo */}
-      <section className="py-24 bg-white">
+      <section className="py-16 md:py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-blue-800 rounded-[3rem] p-12 md:p-20 relative overflow-hidden">
-            <div className="relative z-10 flex flex-col md:flex-row items-center gap-16">
+          <div className="bg-blue-800 rounded-[2rem] md:rounded-[3rem] p-6 sm:p-10 md:p-20 relative overflow-hidden">
+            <div className="relative z-10 flex flex-col md:flex-row items-center gap-10 md:gap-16">
               <div className="md:w-1/2 text-white">
-                <h5 className="text-4xl md:text-5xl font-black mb-8" style={{textAlign: 'center'}}>Booking a service is now at your fingertips</h5>
-                <p className="text-lg text-blue-100 mb-8" style={{textAlign: 'center'}}>Download the Home Protection app to manage bookings, track technicians, and get exclusive discounts.</p>
-                <h4 className="text-4xl md:text-5xl font-black mb-6" style={{textAlign: 'center'}}>Coming Soon</h4> <br></br>
+                <h5 className="text-2xl sm:text-3xl md:text-5xl font-black mb-6 md:mb-8" style={{textAlign: 'center'}}>Booking a service is now at your fingertips</h5>
+                <p className="text-base md:text-lg text-blue-100 mb-6 md:mb-8" style={{textAlign: 'center'}}>Download the Home Protection app to manage bookings, track technicians, and get exclusive discounts.</p>
+                <h4 className="text-3xl md:text-5xl font-black mb-6" style={{textAlign: 'center'}}>Coming Soon</h4> <br></br>
                 <div className="flex flex-wrap gap-4 justify-center">
-                  <button className="bg-white text-blue-900 px-8 py-3 rounded-xl flex items-center gap-3 font-bold hover:bg-gray-100 transition-all">
+                  <button className="w-full sm:w-auto justify-center bg-white text-blue-900 px-8 py-3 rounded-xl flex items-center gap-3 font-bold hover:bg-gray-100 transition-all">
                     <i className="fab fa-apple text-2xl"></i>
                     <div className="text-left">
                       <p className="text-[10px] uppercase font-bold text-gray-500 leading-none">Download on</p>
                       <p className="text-lg">App Store</p>
                     </div>
                   </button>
-                  <button className="bg-white text-blue-900 px-8 py-3 rounded-xl flex items-center gap-3 font-bold hover:bg-gray-100 transition-all">
+                  <button className="w-full sm:w-auto justify-center bg-white text-blue-900 px-8 py-3 rounded-xl flex items-center gap-3 font-bold hover:bg-gray-100 transition-all">
                     <i className="fab fa-google-play text-2xl text-blue-600"></i>
                     <div className="text-left">
                       <p className="text-[10px] uppercase font-bold text-gray-500 leading-none">Get it on</p>
@@ -257,8 +257,8 @@ const HomePage: React.FC = () => {
                 </div>
               </div>
               <div className="md:w-1/2">
-                <div className="relative flex items-center justify-center -my-12 md:-my-20">
-                  <img src="https://d3puhl2t51lebl.cloudfront.net/uploads/2024/07/homeservice.png?resize=850x1024&vertical=center" alt="Mobile App" className="max-w-full h-full mx-auto rounded-[3rem] shadow-2xl transform rotate-4 border-10 border-gray-900" />
+                <div className="relative flex items-center justify-center my-0 md:-my-20">
+                  <img src="https://d3puhl2t51lebl.cloudfront.net/uploads/2024/07/homeservice.png?resize=850x1024&vertical=center" alt="Mobile App" className="max-w-[250px] sm:max-w-[320px] md:max-w-full h-full mx-auto rounded-[2rem] md:rounded-[3rem] shadow-2xl transform rotate-0 sm:rotate-4 border-4 md:border-8 border-gray-900" />
                   <div className="absolute top-1/2 -left-10 w-24 h-24 bg-yellow-400 rounded-full blur-3xl opacity-30"></div>
                 </div>
               </div>

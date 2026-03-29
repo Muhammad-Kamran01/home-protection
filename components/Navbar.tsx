@@ -33,13 +33,13 @@ const Navbar: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-20">
           <div className="flex items-center">
-            <Link to="/" className="flex-shrink-0 flex items-center gap-0">
-              <div className="p-3 rounded-lg text-white flex items-center justify-center">
-                <img src={logo} alt="Home Protection" className="w-16 h-16 object-contain" />
+            <Link to="/" className="flex-shrink-0 flex items-center gap-1 sm:gap-2">
+              <div className="p-1 sm:p-2 rounded-lg text-white flex items-center justify-center">
+                <img src={logo} alt="Home Protection" className="w-11 h-11 sm:w-14 sm:h-14 object-contain" />
               </div>
               <div className="flex flex-col">
-                <span className="text-xl font-bold text-blue-900 leading-tight">Home Protection</span>
-                <span className="text-[10px] uppercase tracking-widest text-blue-600 font-bold">Maintenance Experts</span>
+                <span className="text-lg sm:text-xl font-bold text-blue-900 leading-tight">Home Protection</span>
+                <span className="text-[0.58rem] sm:text-[10px] uppercase tracking-[0.22em] text-blue-600 font-bold">Maintenance Experts</span>
               </div>
             </Link>
           </div>

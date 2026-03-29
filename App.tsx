@@ -224,10 +224,21 @@ const ProtectedRoute: React.FC<{
   return <>{children}</>;
 };
 
+const ScrollToTop: React.FC = () => {
+  const location = useLocation();
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  }, [location.pathname, location.search, location.hash]);
+
+  return null;
+};
+
 const App: React.FC = () => {
   return (
     <AuthProvider>
       <Router>
+        <ScrollToTop />
         <div className="flex flex-col min-h-screen">
           <Routes>
             {/* Public Layout */}
