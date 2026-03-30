@@ -89,7 +89,7 @@ const HomePage: React.FC = () => {
       </section>
 
       {/* Stats Section */}
-      <section className="py-8 sm:py-12 bg-white relative mt-0 md:-mt-10 mx-4 sm:mx-auto max-w-6xl rounded-3xl sm:rounded-2xl shadow-xl z-20">
+      <section className="py-8 sm:py-12 bg-white relative -mt-6 md:-mt-10 mx-4 sm:mx-auto max-w-6xl rounded-3xl sm:rounded-2xl shadow-xl z-20">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 px-4 sm:px-8">
           {stats.map((stat, i) => (
             <div key={i} className="text-center space-y-2">
@@ -258,7 +258,7 @@ const HomePage: React.FC = () => {
               </div>
               <div className="md:w-1/2">
                 <div className="relative flex items-center justify-center my-0 md:-my-20">
-                  <img src="https://d3puhl2t51lebl.cloudfront.net/uploads/2024/07/homeservice.png?resize=850x1024&vertical=center" alt="Mobile App" className="max-w-[250px] sm:max-w-[320px] md:max-w-full h-full mx-auto rounded-[2rem] md:rounded-[3rem] shadow-2xl transform rotate-0 sm:rotate-4 border-4 md:border-8 border-gray-900" />
+                  <img src="https://d3puhl2t51lebl.cloudfront.net/uploads/2024/07/homeservice.png?resize=850x1024&vertical=center" alt="Mobile App" className="max-w-[250px] sm:max-w-[320px] md:max-w-full h-full mx-auto rounded-[2rem] md:rounded-[3rem] shadow-2xl transform rotate-0 sm:rotate-4 border-0 md:border-14 border-gray-900" />
                   <div className="absolute top-1/2 -left-10 w-24 h-24 bg-yellow-400 rounded-full blur-3xl opacity-30"></div>
                 </div>
               </div>

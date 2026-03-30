@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { supabase } from '../supabase';
 import { useAuth } from '../App';
 
@@ -12,10 +12,11 @@ const CheckoutPage: React.FC = () => {
   const { service, customer } = state;
 
   const [processing, setProcessing] = useState(false);
-  const [message, setMessage] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const handleConfirm = async () => {
     setProcessing(true);
+    setErrorMessage(null);
     try {
       // Step 1: Insert into bookings table
       const { data: booking, error: bookingError } = await supabase
@@ -38,7 +39,7 @@ const CheckoutPage: React.FC = () => {
 
       if (bookingError) {
         console.error('Booking insert failed:', bookingError);
-        setMessage('Failed to save booking. Please try again.');
+        setErrorMessage('Failed to save booking. Please try again.');
         return;
       }
 
@@ -58,10 +59,16 @@ const CheckoutPage: React.FC = () => {
         }
       }
 
-      setMessage('Booking confirmed! We will contact you shortly.');
-      setTimeout(() => navigate('/'), 2500);
+      navigate('/booking-success', {
+        replace: true,
+        state: {
+          bookingId: booking?.id,
+          scheduledAt: booking?.scheduled_at || null,
+          serviceName: service?.name || 'Service',
+        },
+      });
     } catch (err) {
-      setMessage('An error occurred while confirming the booking.');
+      setErrorMessage('An error occurred while confirming the booking.');
     } finally {
       setProcessing(false);
     }
@@ -123,7 +130,14 @@ const CheckoutPage: React.FC = () => {
             <button onClick={() => navigate(-1)} className="w-full sm:w-auto bg-gray-100 hover:bg-gray-200 px-5 py-3 rounded-full">Back</button>
           </div>
 
-          {message && <p className="mt-4 text-sm text-green-600">{message}</p>}
+          <p className="mt-4 text-xs text-gray-500 leading-relaxed">
+            By confirming this booking, you acknowledge our{' '}
+            <Link to="/terms-of-service" className="text-blue-600 font-semibold hover:underline">Terms of Service</Link>,{' '}
+            <Link to="/privacy-policy" className="text-blue-600 font-semibold hover:underline">Privacy Policy</Link>, and{' '}
+            <Link to="/refund-policy" className="text-blue-600 font-semibold hover:underline">Refund Policy</Link>.
+          </p>
+
+          {errorMessage && <p className="mt-4 text-sm text-red-600">{errorMessage}</p>}
         </div>
       </div>
     </div>

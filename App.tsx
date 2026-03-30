@@ -15,8 +15,14 @@ import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import BookingPage from "./pages/BookingPage";
 import CheckoutPage from "./pages/CheckoutPage";
+import BookingSuccessPage from "./pages/BookingSuccessPage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsOfService from "./pages/TermsOfService";
+import RefundPolicy from "./pages/RefundPolicy";
+import FAQsPage from "./pages/FAQsPage";
+import SiteMapPage from "./pages/SiteMapPage";
 
 // Dashboards
 import AdminDashboard from "./pages/admin/AdminDashboard";
@@ -323,6 +329,10 @@ const App: React.FC = () => {
               }
             />
             <Route
+              path="/booking-success"
+              element={<BookingSuccessPage />}
+            />
+            <Route
               path="/login"
               element={
                 <>
@@ -362,6 +372,61 @@ const App: React.FC = () => {
                 </>
               }
             />
+            <Route
+              path="/privacy-policy"
+              element={
+                <>
+                  <Navbar />
+                  <PrivacyPolicy />
+                  <Footer />
+                </>
+              }
+            />
+            <Route
+              path="/terms-of-service"
+              element={
+                <>
+                  <Navbar />
+                  <TermsOfService />
+                  <Footer />
+                </>
+              }
+            />
+            <Route
+              path="/refund-policy"
+              element={
+                <>
+                  <Navbar />
+                  <RefundPolicy />
+                  <Footer />
+                </>
+              }
+            />
+            <Route
+              path="/faq"
+              element={
+                <>
+                  <Navbar />
+                  <FAQsPage />
+                  <Footer />
+                </>
+              }
+            />
+            <Route
+              path="/site-map"
+              element={
+                <>
+                  <Navbar />
+                  <SiteMapPage />
+                  <Footer />
+                </>
+              }
+            />
+            <Route path="/privacy" element={<Navigate to="/privacy-policy" replace />} />
+            <Route path="/terms" element={<Navigate to="/terms-of-service" replace />} />
+            <Route path="/refund" element={<Navigate to="/refund-policy" replace />} />
+            <Route path="/faqs" element={<Navigate to="/faq" replace />} />
+            <Route path="/sitemap" element={<Navigate to="/site-map" replace />} />
 
             {/* Protected Roles */}
             <Route

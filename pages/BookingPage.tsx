@@ -91,9 +91,9 @@ const BookingPage: React.FC = () => {
                   <textarea value={address} onChange={(e) => setAddress(e.target.value)} placeholder="Enter your complete address" className="mt-1 block w-full rounded-xl border border-gray-200 bg-gray-50 p-3 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
                 </div>
 
-                <div className="flex items-center gap-4 pt-4">
-                  <button type="submit" className="inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-full shadow">Proceed to Checkout</button>
-                  <button type="button" onClick={() => window.history.back()} className="inline-flex items-center justify-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium px-5 py-3 rounded-full">Back</button>
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 pt-4">
+                  <button type="submit" className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3.5 sm:py-3 rounded-2xl sm:rounded-full shadow">Proceed to Checkout</button>
+                  <button type="button" onClick={() => window.history.back()} className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium px-5 py-3.5 sm:py-3 rounded-2xl sm:rounded-full">Back</button>
                 </div>
               </form>
             </div>

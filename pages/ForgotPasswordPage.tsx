@@ -37,11 +37,12 @@ const ForgotPasswordPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center items-center px-4 pt-6 pb-12">
-      <Link to="/" className="mb-8 flex items-center gap-0">
-        <div className="p-2 rounded-lg text-white">
-          <img src={logo} alt="Home Protection" className="w-10 h-10 object-contain rounded-md" />
+      <Link to="/" className="mb-8 w-full max-w-md flex items-center justify-center gap-3 text-center">
+        <img src={logo} alt="Home Protection" className="w-9 h-9 sm:w-10 sm:h-10 object-contain rounded-md" />
+        <div className="text-left">
+          <p className="text-2xl font-bold text-blue-900 leading-none">Home Protection</p>
+          <p className="text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.22em] text-blue-700 mt-1">Maintenance Experts</p>
         </div>
-        <span className="text-2xl font-bold text-blue-900">Home Protection</span>
       </Link>
 
       <div className="max-w-md w-full bg-white rounded-3xl shadow-xl p-8 border border-gray-100">

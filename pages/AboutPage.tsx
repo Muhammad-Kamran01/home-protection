@@ -6,13 +6,13 @@ const AboutPage: React.FC = () => {
   return (
     <div className="bg-white">
       {/* Hero Section */}
-      <section className="bg-blue-900 py-24 relative overflow-hidden">
+      <section className="bg-blue-900 py-16 sm:py-20 md:py-24 relative overflow-hidden">
         <div className="absolute inset-0 opacity-20">
           <img src="https://img.freepik.com/premium-photo/teamwork-human-resources-hr-management-technology-business-kudos_31965-617873.jpg?q=80&w=1974&auto=format&fit=crop" alt="Team" className="w-full h-full object-cover" />
         </div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-          <h1 className="text-5xl font-black text-white mb-6">Built on Trust & Excellence</h1>
-          <p className="text-xl text-blue-100 max-w-3xl mx-auto">Providing professional maintenance solutions since 2005. Our mission is to protect every home with quality workmanship.</p>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-white mb-4 md:mb-6 leading-tight">Built on Trust & Excellence</h1>
+          <p className="text-base sm:text-lg md:text-xl text-blue-100 max-w-3xl mx-auto leading-relaxed">Providing professional maintenance solutions since 2005. Our mission is to protect every home with quality workmanship.</p>
         </div>
       </section>
 
@@ -146,23 +146,23 @@ const AboutPage: React.FC = () => {
       </section>
 
       {/* Mobile App Promo */}
-      <section className="py-24 bg-white">
+      <section className="py-16 md:py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-blue-800 rounded-[3rem] p-12 md:p-20 relative overflow-hidden">
-            <div className="relative z-10 flex flex-col md:flex-row items-center gap-16">
+          <div className="bg-blue-800 rounded-[2rem] md:rounded-[3rem] p-6 sm:p-10 md:p-20 relative overflow-hidden">
+            <div className="relative z-10 flex flex-col md:flex-row items-center gap-10 md:gap-16">
               <div className="md:w-1/2 text-white">
-                <h5 className="text-4xl md:text-5xl font-black mb-8" style={{textAlign: 'center'}}>Booking a service is now at your fingertips</h5>
-                <p className="text-lg text-blue-100 mb-8" style={{textAlign: 'center'}}>Download the Home Protection app to manage bookings, track technicians, and get exclusive discounts.</p>
-                <h4 className="text-4xl md:text-5xl font-black mb-6" style={{textAlign: 'center'}}>Coming Soon</h4> <br></br>
+                <h5 className="text-2xl sm:text-3xl md:text-5xl font-black mb-6 md:mb-8" style={{textAlign: 'center'}}>Booking a service is now at your fingertips</h5>
+                <p className="text-base md:text-lg text-blue-100 mb-6 md:mb-8" style={{textAlign: 'center'}}>Download the Home Protection app to manage bookings, track technicians, and get exclusive discounts.</p>
+                <h4 className="text-3xl md:text-5xl font-black mb-6" style={{textAlign: 'center'}}>Coming Soon</h4> <br></br>
                 <div className="flex flex-wrap gap-4 justify-center">
-                  <button className="bg-white text-blue-900 px-8 py-3 rounded-xl flex items-center gap-3 font-bold hover:bg-gray-100 transition-all">
+                  <button className="w-full sm:w-auto justify-center bg-white text-blue-900 px-8 py-3 rounded-xl flex items-center gap-3 font-bold hover:bg-gray-100 transition-all">
                     <i className="fab fa-apple text-2xl"></i>
                     <div className="text-left">
                       <p className="text-[10px] uppercase font-bold text-gray-500 leading-none">Download on</p>
                       <p className="text-lg">App Store</p>
                     </div>
                   </button>
-                  <button className="bg-white text-blue-900 px-8 py-3 rounded-xl flex items-center gap-3 font-bold hover:bg-gray-100 transition-all">
+                  <button className="w-full sm:w-auto justify-center bg-white text-blue-900 px-8 py-3 rounded-xl flex items-center gap-3 font-bold hover:bg-gray-100 transition-all">
                     <i className="fab fa-google-play text-2xl text-blue-600"></i>
                     <div className="text-left">
                       <p className="text-[10px] uppercase font-bold text-gray-500 leading-none">Get it on</p>
@@ -172,8 +172,8 @@ const AboutPage: React.FC = () => {
                 </div>
               </div>
               <div className="md:w-1/2">
-                <div className="relative flex items-center justify-center -my-12 md:-my-20">
-                  <img src="https://d3puhl2t51lebl.cloudfront.net/uploads/2024/07/homeservice.png?resize=850x1024&vertical=center" alt="Mobile App" className="max-w-full h-full mx-auto rounded-[3rem] shadow-2xl transform rotate-4 border-10 border-gray-900" />
+                <div className="relative flex items-center justify-center my-0 md:-my-20">
+                  <img src="https://d3puhl2t51lebl.cloudfront.net/uploads/2024/07/homeservice.png?resize=850x1024&vertical=center" alt="Mobile App" className="max-w-[250px] sm:max-w-[320px] md:max-w-full h-full mx-auto rounded-[2rem] md:rounded-[3rem] shadow-2xl transform rotate-0 sm:rotate-4 border-0 md:border-14 border-gray-900" />
                   <div className="absolute top-1/2 -left-10 w-24 h-24 bg-yellow-400 rounded-full blur-3xl opacity-30"></div>
                 </div>
               </div>
@@ -183,7 +183,7 @@ const AboutPage: React.FC = () => {
             <div className="absolute bottom-0 left-0 w-48 h-48 bg-blue-600/20 rounded-full translate-y-1/2 -translate-x-1/2"></div>
           </div>
         </div>
-      </section>
+      </section>      
 
       {/* Team CTA */}
       <section className="py-20">

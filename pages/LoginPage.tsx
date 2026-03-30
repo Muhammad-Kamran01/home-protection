@@ -9,6 +9,7 @@ import logo from '../assets/logo.png';
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
@@ -77,11 +78,12 @@ const LoginPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center items-center px-4 pt-6 pb-12">
-      <Link to="/" className="mb-8 flex items-center gap-0">
-        <div className="p-2 rounded-lg text-white">
-          <img src={logo} alt="Home Protection" className="w-10 h-10 object-contain rounded-md" />
+      <Link to="/" className="mb-8 w-full max-w-md flex items-center justify-center gap-3 text-center">
+        <img src={logo} alt="Home Protection" className="w-9 h-9 sm:w-10 sm:h-10 object-contain rounded-md" />
+        <div className="text-left">
+          <p className="text-2xl font-bold text-blue-900 leading-none">Home Protection</p>
+          <p className="text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.22em] text-blue-700 mt-1">Maintenance Experts</p>
         </div>
-        <span className="text-2xl font-bold text-blue-900">Home Protection</span>
       </Link>
 
       <div className="max-w-md w-full bg-white rounded-3xl shadow-xl p-8 border border-gray-100">
@@ -111,14 +113,24 @@ const LoginPage: React.FC = () => {
 
           <div>
             <label className="block text-sm font-bold text-gray-700 mb-2">Password</label>
-            <input 
-              type="password" 
-              required
-              className="w-full px-5 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-600"
-              placeholder="••••••••"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
+            <div className="relative">
+              <input 
+                type={showPassword ? 'text' : 'password'}
+                required
+                className="w-full px-5 py-3 pr-12 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-600"
+                placeholder="••••••••"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword((prev) => !prev)}
+                className="absolute inset-y-0 right-0 px-4 text-gray-500 hover:text-blue-600 transition-colors"
+                aria-label={showPassword ? 'Hide password' : 'Show password'}
+              >
+                <i className={`fas ${showPassword ? 'fa-eye-slash' : 'fa-eye'}`}></i>
+              </button>
+            </div>
           </div>
 
           <div className="flex items-center justify-between">

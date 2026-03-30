@@ -43,26 +43,25 @@ const ContactPage: React.FC = () => {
 
   return (
     <div className="bg-gray-50 min-h-screen">
-      <div className="bg-blue-800 py-24 text-center text-white">
-        <h1 className="text-5xl font-black mb-6">Contact Us</h1>
-        <p className="text-blue-100 max-w-xl mx-auto">
+      <div className="bg-blue-800 py-16 sm:py-20 md:py-24 text-center text-white px-4">
+        <h1 className="text-4xl sm:text-5xl font-black mb-4 sm:mb-6 leading-tight">Contact Us</h1>
+        <p className="text-base sm:text-lg text-blue-100 max-w-xl mx-auto leading-relaxed">
           Have a question or need an emergency repair? We are here to help you.
         </p>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 md:py-24">
         {/* Availability Cards */}
-        <div className="grid md:grid-cols-2 gap-8 mb-12">
-          <div className="bg-white p-10 rounded-[2.5rem] shadow-lg border border-gray-100 text-center">
+        <div className="grid md:grid-cols-2 gap-5 sm:gap-8 mb-8 sm:mb-12">
+          <div className="bg-white p-6 sm:p-8 md:p-10 rounded-3xl sm:rounded-[2.5rem] shadow-lg border border-gray-100 text-center">
             <div className="flex items-center justify-center gap-4 mb-6 flex-col">
-              <div className="w-16 h-16 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center text-2xl">
+              <div className="w-14 h-14 sm:w-16 sm:h-16 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center text-xl sm:text-2xl">
                 <i className="fas fa-calendar-days"></i>
               </div>
               <div>
-                <h3 className="text-xl font-black text-blue-900">
+                <h3 className="text-lg sm:text-xl font-black text-blue-900">
                   Available Days
                 </h3>
-                <br></br>
                 <p className="text-gray-500 text-sm font-bold">
                   Monday to Sunday
                 </p>
@@ -75,16 +74,15 @@ const ContactPage: React.FC = () => {
             </p>
           </div>
 
-          <div className="bg-white p-10 rounded-[2.5rem] shadow-lg border border-gray-100 text-center">
+          <div className="bg-white p-6 sm:p-8 md:p-10 rounded-3xl sm:rounded-[2.5rem] shadow-lg border border-gray-100 text-center">
             <div className="flex items-center justify-center gap-4 mb-6 flex-col">
-              <div className="w-16 h-16 bg-yellow-100 text-yellow-600 rounded-2xl flex items-center justify-center text-2xl">
+              <div className="w-14 h-14 sm:w-16 sm:h-16 bg-yellow-100 text-yellow-600 rounded-2xl flex items-center justify-center text-xl sm:text-2xl">
                 <i className="fas fa-clock"></i>
               </div>
               <div>
-                <h3 className="text-xl font-black text-blue-900">
+                <h3 className="text-lg sm:text-xl font-black text-blue-900">
                   Available Time
                 </h3>
-                <br></br>
                 <p className="text-gray-500 text-sm font-bold">
                   Mon-Sat : 09:00 AM - 06:00 PM
                 </p>
@@ -101,15 +99,15 @@ const ContactPage: React.FC = () => {
           </div>
         </div>
 
-        <div className="grid lg:grid-cols-3 gap-8">
+        <div className="grid lg:grid-cols-3 gap-5 sm:gap-8">
           {/* Form */}
-          <div className="lg:col-span-2 bg-white rounded-[2.5rem] shadow-xl p-10 md:p-16 border border-gray-100">
+          <div className="lg:col-span-2 bg-white rounded-3xl sm:rounded-[2.5rem] shadow-xl p-6 sm:p-8 md:p-16 border border-gray-100">
             {submitted ? (
-              <div className="text-center py-20">
+              <div className="text-center py-12 sm:py-20">
                 <div className="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center text-4xl mx-auto mb-6">
                   <i className="fas fa-check"></i>
                 </div>
-                <h2 className="text-3xl font-black text-blue-900 mb-4">
+                <h2 className="text-2xl sm:text-3xl font-black text-blue-900 mb-4">
                   Message Sent!
                 </h2>
                 <p className="text-gray-500">
@@ -118,8 +116,8 @@ const ContactPage: React.FC = () => {
                 </p>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-8">
-                <div className="grid md:grid-cols-2 gap-8">
+              <form onSubmit={handleSubmit} className="space-y-5 sm:space-y-8">
+                <div className="grid md:grid-cols-2 gap-5 sm:gap-8">
                   <div className="space-y-2">
                     <label className="text-sm font-bold text-gray-700">
                       Full Name
@@ -129,7 +127,7 @@ const ContactPage: React.FC = () => {
                       type="text"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
-                      className="w-full px-6 py-4 rounded-2xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-600 bg-gray-50"
+                      className="w-full px-4 sm:px-6 py-3.5 sm:py-4 rounded-xl sm:rounded-2xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-600 bg-gray-50 text-base"
                       placeholder="John Doe"
                     />
                   </div>
@@ -142,12 +140,12 @@ const ContactPage: React.FC = () => {
                       type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="w-full px-6 py-4 rounded-2xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-600 bg-gray-50"
+                      className="w-full px-4 sm:px-6 py-3.5 sm:py-4 rounded-xl sm:rounded-2xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-600 bg-gray-50 text-base"
                       placeholder="john@example.com"
                     />
                   </div>
                 </div>
-                <div className="grid md:grid-cols-2 gap-8">
+                <div className="grid md:grid-cols-2 gap-5 sm:gap-8">
                   <div className="space-y-2">
                     <label className="text-sm font-bold text-gray-700">
                       Phone Number
@@ -157,7 +155,7 @@ const ContactPage: React.FC = () => {
                       type="tel"
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
-                      className="w-full px-6 py-4 rounded-2xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-600 bg-gray-50"
+                      className="w-full px-4 sm:px-6 py-3.5 sm:py-4 rounded-xl sm:rounded-2xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-600 bg-gray-50 text-base"
                       placeholder="+92 3XX XXXXXXX"
                     />
                   </div>
@@ -166,7 +164,7 @@ const ContactPage: React.FC = () => {
                       Subject
                     </label>
                     <select
-                      className="w-full px-6 py-4 rounded-2xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-600 bg-gray-50"
+                      className="w-full px-4 sm:px-6 py-3.5 sm:py-4 rounded-xl sm:rounded-2xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-600 bg-gray-50 text-base"
                       value={subject}
                       onChange={(e) => setSubject(e.target.value)}
                     >
@@ -186,13 +184,13 @@ const ContactPage: React.FC = () => {
                     rows={5}
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
-                    className="w-full px-6 py-4 rounded-2xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-600 bg-gray-50"
+                    className="w-full px-4 sm:px-6 py-3.5 sm:py-4 rounded-xl sm:rounded-2xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-600 bg-gray-50 text-base"
                     placeholder="How can we help you?"
                   ></textarea>
                 </div>
                 <button
                   type="submit"
-                  className="w-full bg-blue-600 text-white py-5 rounded-2xl font-black text-lg hover:bg-blue-700 transition-all shadow-xl shadow-blue-100"
+                  className="w-full bg-blue-600 text-white py-4 sm:py-5 rounded-xl sm:rounded-2xl font-black text-base sm:text-lg hover:bg-blue-700 transition-all shadow-xl shadow-blue-100"
                 >
                   Send Message
                 </button>
@@ -201,20 +199,20 @@ const ContactPage: React.FC = () => {
           </div>
 
           {/* Sidebar */}
-          <div className="space-y-8">
-            <div className="bg-white p-10 rounded-[2.5rem] shadow-lg border border-gray-100">
+          <div className="space-y-5 sm:space-y-8">
+            <div className="bg-white p-6 sm:p-8 md:p-10 rounded-3xl sm:rounded-[2.5rem] shadow-lg border border-gray-100">
               <h3
-                className="text-xl font-black text-blue-900 mb-8"
+                className="text-2xl font-black text-blue-900 mb-6 sm:mb-8"
                 style={{ textAlign: "center" }}
               >
                 Head Office
               </h3>
-              <div className="space-y-6">
+              <div className="space-y-5 sm:space-y-6">
                 <div className="flex gap-4">
                   <div className="text-blue-600 text-xl">
                     <i className="fas fa-map-marker-alt"></i>
                   </div>
-                  <p className="text-gray-600 text-sm">
+                  <p className="text-gray-600 text-sm sm:text-base leading-relaxed">
                     Town Ship, Lahore, Punjab, Pakistan
                   </p>
                 </div>
@@ -222,7 +220,7 @@ const ContactPage: React.FC = () => {
                   <div className="text-blue-600 text-xl">
                     <i className="fas fa-phone-alt"></i>
                   </div>
-                  <p className="text-gray-600 text-sm font-bold">
+                  <p className="text-gray-600 text-sm sm:text-base font-bold">
                     +92-316-1455160
                   </p>
                 </div>
@@ -230,24 +228,22 @@ const ContactPage: React.FC = () => {
                   <div className="text-blue-600 text-xl">
                     <i className="fas fa-envelope"></i>
                   </div>
-                  <p className="text-gray-600 text-sm">
+                  <p className="text-gray-600 text-sm sm:text-base break-all leading-relaxed">
                     latestservicesprovider@gmail.com
                   </p>
                 </div>
               </div>
             </div>
-            <br></br>
-            <br></br>
 
-            <div className="bg-blue-900 p-10 rounded-[2.5rem] shadow-lg text-white">
+            <div className="bg-blue-900 p-6 sm:p-8 md:p-10 rounded-3xl sm:rounded-[2.5rem] shadow-lg text-white">
               <h3
-                className="text-xl font-bold mb-4"
+                className="text-2xl font-bold mb-4"
                 style={{ textAlign: "center" }}
               >
                 Emergency Help?
               </h3>
               <p
-                className="text-blue-200 text-sm mb-8"
+                className="text-blue-200 text-sm sm:text-base mb-6 sm:mb-8 leading-relaxed"
                 style={{ textAlign: "center" }}
               >
                 Our rapid response team is available 12 hours a day for
@@ -255,7 +251,7 @@ const ContactPage: React.FC = () => {
               </p>
               <a
                 href="tel:+923161455160"
-                className="block text-center bg-yellow-400 text-blue-900 py-4 rounded-2xl font-black hover:bg-yellow-500 transition-all"
+                className="block text-center bg-yellow-400 text-blue-900 py-3.5 sm:py-4 rounded-xl sm:rounded-2xl font-black hover:bg-yellow-500 transition-all"
               >
                 Call Now
               </a>

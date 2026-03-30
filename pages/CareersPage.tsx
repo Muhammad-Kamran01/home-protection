@@ -132,10 +132,10 @@ const CareersPage: React.FC = () => {
 
   return (
     <div className="bg-white min-h-screen">
-      <div className="bg-blue-800 py-24 text-center text-white relative overflow-hidden">
+      <div className="bg-blue-800 py-16 sm:py-20 md:py-24 text-center text-white relative overflow-hidden">
         <div className="relative z-10">
-          <h1 className="text-5xl font-black mb-6">Join Our Fleet</h1>
-          <p className="text-blue-100 max-w-2xl mx-auto px-4">Become a part of the fastest-growing maintenance network in Pakistan. We offer competitive pay, continuous training, and a supportive environment.</p>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-black mb-4 md:mb-6 leading-tight">Join Our Fleet</h1>
+          <p className="text-sm sm:text-base md:text-lg text-blue-100 max-w-2xl mx-auto px-4 leading-relaxed">Become a part of the fastest-growing maintenance network in Pakistan. We offer competitive pay, continuous training, and a supportive environment.</p>
         </div>
         <div className="absolute top-0 right-0 w-96 h-96 bg-blue-700/50 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
       </div>
