@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "generate:sitemap": "node ./scripts/generate-sitemap.mjs",
     "build": "vite build",
+    "prebuild": "npm run generate:sitemap",
     "preview": "vite preview"
   },
   "dependencies": {
