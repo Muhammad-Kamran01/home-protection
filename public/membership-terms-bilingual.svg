@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="1300" viewBox="0 0 1400 1300" role="img" aria-labelledby="title desc">
+  <title id="title">Membership Terms and Conditions</title>
+  <desc id="desc">Bilingual terms and conditions in English and Urdu for membership offer.</desc>
+  <rect x="0" y="0" width="1400" height="1300" rx="28" fill="#ffffff"/>
+  <rect x="32" y="32" width="1336" height="1236" rx="24" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+
+  <text x="70" y="94" fill="#1e3a8a" font-size="42" font-weight="800" font-family="Segoe UI, Arial, sans-serif">
+    TERMS AND CONDITIONS
+  </text>
+  <text x="1330" y="94" fill="#1e3a8a" font-size="42" font-weight="800" text-anchor="end" font-family="Noto Nastaliq Urdu, Noto Naskh Arabic, Jameel Noori Nastaleeq, serif">
+    شرائط و ضوابط لاگو ہیں
+  </text>
+
+  <line x1="700" y1="120" x2="700" y2="1236" stroke="#dbeafe" stroke-width="2"/>
+
+  <foreignObject x="70" y="136" width="595" height="1090">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="height:100%; color:#111827; font-family:'Segoe UI', Arial, sans-serif;">
+      <ul style="margin:0; padding-left:30px; font-size:30px; line-height:1.45;">
+        <li>Available in Lahore for a specific area only.</li>
+        <li>Registration is required to avail the offer.</li>
+        <li>Deposit Rs. 1000 registration fee in company bank or EasyPaisa account and share the receipt on WhatsApp.</li>
+        <li>Only one split AC is included in the complete washing and cleaning package.</li>
+        <li>Gas and parts replacement or AC relocation is not included.</li>
+        <li>Separate labor will be charged for gas/parts replacement.</li>
+        <li>20% discount on more than 4 AC services.</li>
+        <li>Special discounts for registered members on other future work.</li>
+        <li>We also provide electrical, plumbing, and house painting services.</li>
+        <li>Registration is only possible on the website.</li>
+        <li>Our representative is not allowed to receive cash.</li>
+      </ul>
+    </div>
+  </foreignObject>
+
+  <foreignObject x="735" y="136" width="595" height="1090">
+    <div xmlns="http://www.w3.org/1999/xhtml" dir="rtl" style="height:100%; color:#111827; font-family:'Noto Nastaliq Urdu','Noto Naskh Arabic','Jameel Noori Nastaleeq',serif;">
+      <ul style="margin:0; padding-right:30px; font-size:36px; line-height:1.75;">
+        <li>یہ آفر لاہور کے صرف مخصوص علاقے کے لیے دستیاب ہے۔</li>
+        <li>آفر حاصل کرنے کے لیے رجسٹریشن لازمی ہے۔</li>
+        <li>رجسٹریشن فیس 1000 روپے کمپنی بینک یا ایزی پیسہ اکاؤنٹ میں جمع کروا کر رسید واٹس ایپ پر شیئر کرنا لازمی ہے۔</li>
+        <li>مکمل واشنگ اور کلیننگ پیکج میں صرف ایک سپلٹ اے سی شامل ہے۔</li>
+        <li>گیس اور پارٹس کی تبدیلی یا اے سی ری لوکیشن شامل نہیں ہے۔</li>
+        <li>گیس یا پارٹس تبدیلی کے لیے علیحدہ لیبر چارجز وصول کیے جائیں گے۔</li>
+        <li>4 سے زیادہ اے سی سروسز پر 20 فیصد ڈسکاؤنٹ دیا جائے گا۔</li>
+        <li>رجسٹرڈ ممبرز کو مستقبل کے دیگر کاموں پر خصوصی ڈسکاؤنٹ دیا جائے گا۔</li>
+        <li>ہم الیکٹریکل، پلمبنگ اور ہاؤس پینٹنگ سروسز بھی فراہم کرتے ہیں۔</li>
+        <li>رجسٹریشن صرف ویب سائٹ پر ہی ممکن ہے۔</li>
+        <li>ہمارے نمائندے کو کیش وصول کرنے کی اجازت نہیں ہے۔</li>
+      </ul>
+    </div>
+  </foreignObject>
+</svg>

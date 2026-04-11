@@ -33,6 +33,7 @@ import CustomerDashboard from "./pages/customer/CustomerDashboard";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Whatsapp from './components/Whatsapp';
+import MembershipOfferModal from "./components/MembershipOfferModal";
 
 // Auth Context
 interface AuthContextType {
@@ -458,6 +459,7 @@ const App: React.FC = () => {
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
           <Whatsapp/>
+          <MembershipOfferModal />
         </div>
       </Router>
     </AuthProvider>

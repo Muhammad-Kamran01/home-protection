@@ -137,7 +137,7 @@ const TermsOfService: React.FC = () => {
               <p className="mt-3 text-slate-700">Reach out if you need clarification before booking or creating an account.</p>
               <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-slate-700">
                 <p><span className="font-bold text-slate-900">Email:</span> info@homeprotection.pk</p>
-                <p><span className="font-bold text-slate-900">Phone:</span> +92 321 4605210</p>
+                <p><span className="font-bold text-slate-900">Phone:</span> +92 316 1455160</p>
                 <p className="sm:col-span-2"><span className="font-bold text-slate-900">Address:</span> 132-1-D1, Town Ship, Lahore, Punjab, Pakistan</p>
               </div>
               <div className="mt-5 flex flex-wrap gap-3">

@@ -12,6 +12,7 @@ import CategoryManagement from './CategoryManagement';
 import BookingManagement from './BookingManagement';
 import CareersManagement from './CareersManagement';
 import ContactMessages from './ContactMessages';
+import MembershipPlanManagement from './MembershipPlanManagement';
 
 const AdminDashboard: React.FC = () => {
   const { user, signOut } = useAuth();
@@ -82,6 +83,7 @@ const AdminDashboard: React.FC = () => {
   const menuItems = [
     { name: 'Overview', path: '/admin', icon: 'fa-chart-pie' },
     { name: 'Bookings', path: '/admin/bookings', icon: 'fa-calendar-alt' },
+    { name: 'Membership Plans', path: '/admin/membership-plans', icon: 'fa-id-card' },
     { name: 'Services', path: '/admin/services', icon: 'fa-cog' },
     { name: 'Categories', path: '/admin/categories', icon: 'fa-tags' },
     { name: 'Careers', path: '/admin/careers', icon: 'fa-briefcase' },
@@ -222,6 +224,7 @@ const AdminDashboard: React.FC = () => {
             <Route path="services" element={<ServiceManagement />} />
             <Route path="categories" element={<CategoryManagement />} />
             <Route path="bookings" element={<BookingManagement />} />
+            <Route path="membership-plans" element={<MembershipPlanManagement />} />
             <Route path="careers" element={<CareersManagement />} />
             <Route path="contact-messages" element={<ContactMessages />} />
             <Route path="feedback" element={<div className="bg-white p-12 rounded-3xl text-center"><i className="fas fa-tools text-6xl text-gray-100 mb-6"></i><p className="text-gray-400">Feedback Module Coming Soon</p></div>} />
