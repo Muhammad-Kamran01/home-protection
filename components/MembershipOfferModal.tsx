@@ -4,6 +4,7 @@ import { supabase } from "../supabase";
 import popupImage from "../assets/popup.png";
 
 const membershipTermsImage = popupImage;
+const membershipDetailsPdfUrl = "/membership-details.pdf";
 
 interface MembershipFormData {
   fullName: string;
@@ -85,6 +86,10 @@ const MembershipOfferModal: React.FC = () => {
     setFormData(initialFormState);
     setSubmitError("");
     setSubmitSuccess("");
+  };
+
+  const handleViewMembershipDetails = () => {
+    window.open(membershipDetailsPdfUrl, "_blank", "noopener,noreferrer");
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -203,7 +208,7 @@ const MembershipOfferModal: React.FC = () => {
           </div>
 
           <div className="p-4 sm:p-5 flex flex-col items-center gap-4">
-            <p className="text-lg font-black text-red-600">Limited Time Offer — Only in PKR 1000</p>
+            <p className="text-lg font-black text-red-600" style={{textAlign: "center"}}>Limited Time Offer — Only in PKR 1000</p>
             <div className="w-full rounded-xl border border-gray-200 overflow-hidden bg-slate-50">
               <img
                 src={membershipTermsImage}
@@ -212,6 +217,14 @@ const MembershipOfferModal: React.FC = () => {
                 loading="lazy"
               />
             </div>
+
+            <button
+              type="button"
+              onClick={handleViewMembershipDetails}
+              className="w-full rounded-lg border border-blue-700 text-red-700 py-2.5 text-sm font-black hover:bg-blue-50"
+            >
+              View Complete Details and Conditions
+            </button>
 
             <button
               type="button"
