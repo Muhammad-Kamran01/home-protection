@@ -12,6 +12,7 @@ interface MembershipFormData {
   phoneNumber: string;
   totalAcsInstalled: number | "";
   acTypes: string[];
+  paymentMethod: "" | "bank" | "easypaisa";
   agreedToTerms: boolean;
 }
 
@@ -21,10 +22,16 @@ const initialFormState: MembershipFormData = {
   phoneNumber: "",
   totalAcsInstalled: "",
   acTypes: [],
+  paymentMethod: "",
   agreedToTerms: false,
 };
 
 const acTypeOptions = ["Split", "Cabinet", "Cassette"];
+const paymentMethods = [
+  { label: "Bank Account", value: "bank" as const },
+  { label: "Easypaisa", value: "easypaisa" as const },
+];
+const paymentProofBucket = "membership-payment-proofs";
 
 const MembershipOfferModal: React.FC = () => {
   const location = useLocation();
@@ -35,6 +42,7 @@ const MembershipOfferModal: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
   const [submitSuccess, setSubmitSuccess] = useState("");
+  const [paymentProofFile, setPaymentProofFile] = useState<File | null>(null);
   const successPopupTimeoutRef = React.useRef<number | null>(null);
 
   useEffect(() => {
@@ -84,8 +92,17 @@ const MembershipOfferModal: React.FC = () => {
   const handleOpenDetailedForm = () => {
     setShowDetailedForm(true);
     setFormData(initialFormState);
+    setPaymentProofFile(null);
     setSubmitError("");
     setSubmitSuccess("");
+  };
+
+  const isMissingColumnError = (message: string) => {
+    const normalizedMessage = message.toLowerCase();
+    return (
+      normalizedMessage.includes("column") &&
+      (normalizedMessage.includes("does not exist") || normalizedMessage.includes("schema cache"))
+    );
   };
 
   const handleViewMembershipDetails = () => {
@@ -95,8 +112,32 @@ const MembershipOfferModal: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    const trimmedFullName = formData.fullName.trim();
+    const trimmedAddress = formData.address.trim();
+    const trimmedPhoneNumber = formData.phoneNumber.trim();
+
+    if (!trimmedFullName || !trimmedAddress || !trimmedPhoneNumber) {
+      setSubmitError("Please complete all required fields.");
+      return;
+    }
+
+    if (typeof formData.totalAcsInstalled !== "number" || formData.totalAcsInstalled < 1) {
+      setSubmitError("Please enter a valid number of installed ACs.");
+      return;
+    }
+
     if (formData.acTypes.length === 0) {
       setSubmitError("Please select at least one AC type.");
+      return;
+    }
+
+    if (!formData.paymentMethod) {
+      setSubmitError("Please select a payment method.");
+      return;
+    }
+
+    if (!paymentProofFile) {
+      setSubmitError("Please attach payment proof before submitting.");
       return;
     }
 
@@ -109,20 +150,57 @@ const MembershipOfferModal: React.FC = () => {
     setSubmitSuccess("");
     setIsSubmitting(true);
 
+    const normalizedPhoneForPath = trimmedPhoneNumber.replace(/[^0-9]/g, "") || "user";
+    const fileExtension = paymentProofFile.name.includes(".")
+      ? paymentProofFile.name.split(".").pop()?.toLowerCase()
+      : "file";
+    const proofPath = `proofs/${Date.now()}-${normalizedPhoneForPath}.${fileExtension || "file"}`;
+
+    const { error: uploadError } = await supabase.storage
+      .from(paymentProofBucket)
+      .upload(proofPath, paymentProofFile, {
+        cacheControl: "3600",
+        upsert: false,
+      });
+
+    if (uploadError) {
+      setSubmitError(uploadError.message || "Could not upload payment proof. Please try again.");
+      setIsSubmitting(false);
+      return;
+    }
+
     const payload = {
-      full_name: formData.fullName.trim(),
-      address: formData.address.trim(),
-      phone_number: formData.phoneNumber.trim(),
-      total_acs_installed:
-        typeof formData.totalAcsInstalled === "number" ? formData.totalAcsInstalled : 0,
+      full_name: trimmedFullName,
+      address: trimmedAddress,
+      phone_number: trimmedPhoneNumber,
+      total_acs_installed: formData.totalAcsInstalled,
       ac_types: selectedAcTypes,
+      payment_method: formData.paymentMethod,
+      payment_proof_path: proofPath,
       accepted_terms: formData.agreedToTerms,
+      status: "pending",
       created_at: new Date().toISOString(),
     };
 
-    const { error } = await supabase.from("membership_registrations").insert([payload]);
+    let { error } = await supabase.from("membership_registrations").insert([payload]);
+
+    if (error && isMissingColumnError(error.message || "")) {
+      const fallbackPayload = {
+        full_name: trimmedFullName,
+        address: trimmedAddress,
+        phone_number: trimmedPhoneNumber,
+        total_acs_installed: formData.totalAcsInstalled,
+        ac_types: selectedAcTypes,
+        accepted_terms: formData.agreedToTerms,
+        created_at: new Date().toISOString(),
+      };
+
+      const fallbackInsert = await supabase.from("membership_registrations").insert([fallbackPayload]);
+      error = fallbackInsert.error;
+    }
 
     if (error) {
+      await supabase.storage.from(paymentProofBucket).remove([proofPath]);
       setSubmitError(error.message || "Registration failed. Please try again.");
       setIsSubmitting(false);
       return;
@@ -130,6 +208,7 @@ const MembershipOfferModal: React.FC = () => {
 
     setSubmitSuccess("Registration submitted successfully. Thank you!");
     setFormData(initialFormState);
+    setPaymentProofFile(null);
     setIsSubmitting(false);
 
     setSubmitError("");
@@ -259,7 +338,7 @@ const MembershipOfferModal: React.FC = () => {
         </button>
 
         <div className="p-4 sm:p-5 border-b border-gray-200">
-          <h2 id="membership-form-title" className="text-base sm:text-lg font-black text-blue-900 pr-8">
+          <h2 id="membership-form-title" className="text-base sm:text-lg font-black text-blue-900 pr-8" style={{textAlign: "center"}}>
             Register for Membership
           </h2>
         </div>
@@ -337,6 +416,62 @@ const MembershipOfferModal: React.FC = () => {
                   </label>
                 ))}
               </div>
+            </div>
+
+            <div className="rounded-lg border border-blue-100 bg-blue-50/60 p-3 sm:p-4 space-y-3">
+              <p className="text-xs font-bold text-blue-900">Payment Account Details</p>
+
+              <div className="rounded-md border border-blue-200 bg-white p-3">
+                <p className="text-xs font-bold text-gray-800 mb-1">1. Bank Account Details</p>
+                <p className="text-xs text-gray-700"><span className="font-semibold">Bank Name:</span> Faysal Bank Limited</p>
+                <p className="text-xs text-gray-700"><span className="font-semibold">Account Title:</span> MUHAMMAD SAMIULLAH KHAN</p>
+                <p className="text-xs text-gray-700"><span className="font-semibold">Branch:</span> IBB GHAZI CHOWK, LAHORE</p>
+                <p className="text-xs text-gray-700 break-all"><span className="font-semibold">IBAN:</span> PK26FAYS3429301000001160</p>
+              </div>
+
+              <div className="rounded-md border border-blue-200 bg-white p-3">
+                <p className="text-xs font-bold text-gray-800 mb-1">2. Easypaisa Details</p>
+                <p className="text-xs text-gray-700"><span className="font-semibold">Service:</span> Easypaisa</p>
+                <p className="text-xs text-gray-700"><span className="font-semibold">Account Title:</span> Muhammad Sami Ullah Khan</p>
+                <p className="text-xs text-gray-700"><span className="font-semibold">Account No.:</span> 03161455160</p>
+              </div>
+            </div>
+
+            <div>
+              <p className="block text-xs font-bold text-gray-700 mb-1">Payment Method</p>
+              <div className="flex flex-wrap gap-3">
+                {paymentMethods.map((method) => (
+                  <label key={method.value} className="inline-flex items-center gap-2 text-xs text-gray-700">
+                    <input
+                      required
+                      type="radio"
+                      name="paymentMethod"
+                      value={method.value}
+                      checked={formData.paymentMethod === method.value}
+                      onChange={(e) =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          paymentMethod: e.target.value as MembershipFormData["paymentMethod"],
+                        }))
+                      }
+                      className="h-4 w-4 border-gray-300 text-blue-600 focus:ring-blue-500"
+                    />
+                    {method.label}
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold text-gray-700 mb-1">Payment Proof (Screenshot/Image/PDF)</label>
+              <input
+                required
+                type="file"
+                accept=".png,.jpg,.jpeg,.pdf,.webp,.gif,.bmp,.tif,.tiff,.heic,image/*,application/pdf"
+                onChange={(e) => setPaymentProofFile(e.target.files?.[0] || null)}
+                className="w-full rounded-lg border border-gray-300 px-3 py-2 text-xs file:mr-3 file:rounded-md file:border-0 file:bg-blue-100 file:px-3 file:py-1.5 file:font-semibold file:text-blue-800 hover:file:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-600"
+              />
+              <p className="mt-1 text-[11px] text-gray-500">Accepted formats include PNG, JPG, JPEG, PDF and other common image types.</p>
             </div>
 
             <label className="inline-flex items-start gap-2 text-xs text-gray-700">
