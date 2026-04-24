@@ -20,16 +20,16 @@ const Footer: React.FC = () => {
               Leading maintenance service provider in Pakistan. Providing top-tier solutions for AC, Electrical, Plumbing, and Real Estate since 2005.
             </p>
             <div className="flex gap-4">
-              <a href="#" className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-blue-600 transition-colors text-white">
+              <a href="https://www.facebook.com/share/1J7YX1wKvu/" className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-blue-600 transition-colors text-white">
                 <i className="fab fa-facebook-f"></i>
               </a>
-              <a href="#" className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-blue-400 transition-colors text-white">
+              <a href="https://x.com/hprotection_pk" className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-blue-400 transition-colors text-white">
                 <i className="fab fa-twitter"></i>
               </a>
-              <a href="#" className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-pink-600 transition-colors text-white">
+              <a href="https://www.instagram.com/homeprotection_pk/" className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-pink-600 transition-colors text-white">
                 <i className="fab fa-instagram"></i>
               </a>
-              <a href="#" className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-blue-800 transition-colors text-white">
+              <a href="https://www.linkedin.com/company/homeprotection-pk/" className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-blue-800 transition-colors text-white">
                 <i className="fab fa-linkedin-in"></i>
               </a>
             </div>
