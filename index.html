@@ -19,11 +19,12 @@
     <meta name="twitter:description" content="Home Protection provides trusted AC, electrical, plumbing, painting, and maintenance services in Pakistan." />
     <meta name="twitter:image" content="https://www.homeprotection.pk/siteicon-circle-512.png" />
     <link rel="canonical" href="https://www.homeprotection.pk/" />
-    <link rel="icon" type="image/png" sizes="48x48" href="/siteicon-circle-48.png" />
-    <link rel="icon" type="image/png" sizes="96x96" href="/siteicon-circle-96.png" />
-    <link rel="icon" type="image/png" sizes="192x192" href="/siteicon-circle-192.png" />
-    <link rel="apple-touch-icon" sizes="192x192" href="/siteicon-circle-192.png" />
-    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="icon" type="image/png" href="/favicon/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg" />
+    <link rel="shortcut icon" href="/favicon/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png" />
+    <meta name="msapplication-TileColor" content="#0f172a" />
+    <link rel="manifest" href="/favicon/site.webmanifest" />
     <meta name="theme-color" content="#0f172a" />
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
@@ -51,15 +52,39 @@
   "@graph": [
     {
       "@type": "WebSite",
+      "@id": "https://www.homeprotection.pk/#website",
       "name": "Home Protection",
-      "alternateName": "homeprotection.pk",
-      "url": "https://www.homeprotection.pk/"
+      "alternateName": ["Home Protection", "homeprotection.pk"],
+      "url": "https://www.homeprotection.pk/",
+      "publisher": {
+        "@id": "https://www.homeprotection.pk/#organization"
+      }
     },
     {
       "@type": "Organization",
+      "@id": "https://www.homeprotection.pk/#organization",
       "name": "Home Protection",
       "url": "https://www.homeprotection.pk/",
-      "logo": "https://www.homeprotection.pk/siteicon-circle-512.png"
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://www.homeprotection.pk/siteicon-circle-512.png"
+      }
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://www.homeprotection.pk/#webpage",
+      "url": "https://www.homeprotection.pk/",
+      "name": "Home Protection | Maintenance Experts",
+      "isPartOf": {
+        "@id": "https://www.homeprotection.pk/#website"
+      },
+      "about": {
+        "@id": "https://www.homeprotection.pk/#organization"
+      },
+      "primaryImageOfPage": {
+        "@type": "ImageObject",
+        "url": "https://www.homeprotection.pk/siteicon-circle-512.png"
+      }
     }
   ]
 }
