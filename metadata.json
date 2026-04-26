@@ -1,5 +1,5 @@
 {
-  "name": "Home Protection - Maintenance Services",
+  "name": "Home Protection",
   "description": "A comprehensive maintenance service platform featuring a dynamic service catalog, booking system, career portal, and a robust role-based admin dashboard.",
   "requestFramePermissions": [
     "camera",

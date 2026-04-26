@@ -73,7 +73,7 @@ const Footer: React.FC = () => {
               </li>
               <li className="flex gap-3">
                 <i className="fas fa-envelope text-blue-500 mt-1"></i>
-                <span>latestservicesprovider@gmail.com</span>
+                <span>info@homeprotection.pk</span>
               </li>
               <li className="flex gap-3">
                 <i className="fas fa-clock text-blue-500 mt-1"></i>
