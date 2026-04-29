@@ -3,6 +3,7 @@ import React, {useState, useEffect, createContext, useContext, useCallback, useR
 import {HashRouter as Router, Routes, Route, Navigate, Link, useLocation, } from "react-router";
 import { supabase } from "./supabase";
 import { User, UserRole } from "./types";
+import { updatePageMetadata, pageMetadataPresets, DEFAULT_SITE_NAME } from "./src/seoUtils";
 
 // Pages
 import HomePage from "./pages/HomePage";
@@ -97,7 +98,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         if (profile) {
           setUser({
             id: profile.id,
-
+            email: profile.email || '',
             full_name: profile.full_name || '',
             phone: profile.phone || '',
             role: profile.role as UserRole,
@@ -241,11 +242,73 @@ const ScrollToTop: React.FC = () => {
   return null;
 };
 
+/**
+ * Component to update page metadata based on the current route
+ */
+const MetadataUpdater: React.FC = () => {
+  const location = useLocation();
+
+  useEffect(() => {
+    // Map routes to metadata presets
+    const getMetadataForRoute = (pathname: string) => {
+      // Remove hash if present (for hash routing)
+      const path = pathname.split('#').pop() || '/';
+      
+      switch (path) {
+        case '/':
+          return pageMetadataPresets.home;
+        case '/services':
+          return pageMetadataPresets.services;
+        case '/about':
+          return pageMetadataPresets.about;
+        case '/contact':
+          return pageMetadataPresets.contact;
+        case '/booking':
+          return pageMetadataPresets.booking;
+        case '/checkout':
+          return pageMetadataPresets.booking;
+        case '/booking-success':
+          return pageMetadataPresets.booking;
+        case '/careers':
+          return pageMetadataPresets.careers;
+        case '/login':
+          return pageMetadataPresets.login;
+        case '/signup':
+          return pageMetadataPresets.signup;
+        case '/privacy-policy':
+        case '/privacy':
+          return pageMetadataPresets.privacy;
+        case '/terms-of-service':
+        case '/terms':
+          return pageMetadataPresets.terms;
+        case '/refund-policy':
+        case '/refund':
+          return pageMetadataPresets.refund;
+        case '/faq':
+        case '/faqs':
+          return pageMetadataPresets.faqs;
+        case '/admin':
+        case '/admin/':
+          return pageMetadataPresets.admin;
+        default:
+          // Default to home metadata if route not found
+          return pageMetadataPresets.home;
+      }
+    };
+
+    const metadata = getMetadataForRoute(location.pathname);
+    updatePageMetadata(metadata);
+  }, [location.pathname]);
+
+  return null;
+};
+
 const App: React.FC = () => {
   return (
     <AuthProvider>
       <Router>
         <ScrollToTop />
+        <MetadataUpdater />
         <div className="flex flex-col min-h-screen">
           <Routes>
             {/* Public Layout */}
