@@ -29,13 +29,11 @@ export const updatePageMetadata = (metadata: PageMetadata): void => {
   updateMetaTag('og:title', metadata.title);
   updateMetaTag('twitter:title', metadata.title);
 
-  // Update site name tags (keep consistent with title for this page)
-  updateMetaTag('site_name', metadata.title);
-  updateMetaTag('og:site_name', metadata.title);
-
-  // Update application name
-  updateMetaTag('application-name', metadata.title);
-  updateMetaTag('apple-mobile-web-app-title', metadata.title);
+  // Keep site-level identity tags fixed to the brand name.
+  updateMetaTag('site_name', DEFAULT_SITE_NAME);
+  updateMetaTag('og:site_name', DEFAULT_SITE_NAME);
+  updateMetaTag('application-name', DEFAULT_SITE_NAME);
+  updateMetaTag('apple-mobile-web-app-title', DEFAULT_SITE_NAME);
 
   // Update keywords if provided
   if (metadata.keywords) {
