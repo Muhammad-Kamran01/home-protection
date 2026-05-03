@@ -1,6 +1,5 @@
 import React, {useState, useEffect, createContext, useContext, useCallback, useRef} from "react";
-// Fix: Import from 'react-router' instead of 'react-router-dom' for compatibility with modern environments/v7
-import {HashRouter as Router, Routes, Route, Navigate, Link, useLocation, } from "react-router";
+import {BrowserRouter as Router, Routes, Route, Navigate, Link, useLocation} from "react-router-dom";
 import { supabase } from "./supabase";
 import { User, UserRole } from "./types";
 import { updatePageMetadata, pageMetadataPresets, DEFAULT_SITE_NAME } from "./src/seoUtils";
@@ -251,8 +250,7 @@ const MetadataUpdater: React.FC = () => {
   useEffect(() => {
     // Map routes to metadata presets
     const getMetadataForRoute = (pathname: string) => {
-      // Remove hash if present (for hash routing)
-      const path = pathname.split('#').pop() || '/';
+      const path = pathname || '/';
       
       switch (path) {
         case '/':
