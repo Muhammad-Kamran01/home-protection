@@ -51,6 +51,33 @@ const BookingManagement: React.FC = () => {
     fetchBookings();
   };
 
+  const requestFeedback = (booking: any) => {
+    const serviceName = booking.services?.name || 'your service';
+    const bookingLabel = booking.id ? booking.id.slice(0, 8) : 'your booking';
+    const message = `Hello ${booking.customer_name || 'Customer'}, your ${serviceName} booking (#${bookingLabel}) has been completed. We would love your feedback on the service quality, punctuality, and overall experience. Please log in to your customer dashboard and share your review.`;
+
+    const cleanedPhone = String(booking.contact_number || booking.profiles?.phone || '')
+      .replace(/[^\d]/g, '')
+      .replace(/^0/, '92');
+
+    if (cleanedPhone) {
+      window.open(`https://wa.me/${cleanedPhone}?text=${encodeURIComponent(message)}`, '_blank', 'noopener,noreferrer');
+      return;
+    }
+
+    if (booking.customer_email) {
+      window.open(
+        `mailto:${booking.customer_email}?subject=${encodeURIComponent('Feedback request for your completed service')}&body=${encodeURIComponent(message)}`,
+        '_blank',
+        'noopener,noreferrer'
+      );
+      return;
+    }
+
+    navigator.clipboard?.writeText(message);
+    alert('Feedback request copied to clipboard.');
+  };
+
   return (
     <div className="space-y-8">
       <h3 className="font-bold text-2xl text-blue-900">Live Bookings</h3>
@@ -112,14 +139,23 @@ const BookingManagement: React.FC = () => {
                     <option value="cancelled">Cancelled</option>
                   </select>
                 </td>
-                <td className="px-8 py-6 space-y-2">
-                  {/* Details Button */}
+                <td className="px-8 py-6 align-top">
+                  <div className="flex flex-col items-start gap-2">
                   <button
                     onClick={() => setSelectedBooking(b)}
-                    className="block text-blue-600 font-bold text-xs hover:underline"
+                    className="inline-flex min-w-[122px] items-center justify-center rounded-full border border-blue-100 bg-blue-50 px-4 py-2 text-[10px] font-black uppercase tracking-[0.18em] text-blue-700 shadow-sm transition-all hover:-translate-y-0.5 hover:border-blue-200 hover:bg-blue-100 hover:text-blue-800 hover:shadow-md"
                   >
                     Details
                   </button>
+                  {b.status === 'completed' && (
+                    <button
+                      onClick={() => requestFeedback(b)}
+                      className="inline-flex min-w-[122px] items-center justify-center rounded-full border border-green-200 bg-green-50 px-4 py-2 text-[10px] font-black uppercase tracking-[0.16em] text-green-700 shadow-sm transition-all hover:-translate-y-0.5 hover:border-green-300 hover:bg-green-100 hover:text-green-800 hover:shadow-md"
+                    >
+                      Feedback
+                    </button>
+                  )}
+                  </div>
                 </td>
               </tr>
             ))}

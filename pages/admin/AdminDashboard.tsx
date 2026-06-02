@@ -12,6 +12,7 @@ import CategoryManagement from './CategoryManagement';
 import BookingManagement from './BookingManagement';
 import CareersManagement from './CareersManagement';
 import ContactMessages from './ContactMessages';
+import FeedbackManagement from './FeedbackManagement.tsx';
 import MembershipPlanManagement from './MembershipPlanManagement';
 
 const AdminDashboard: React.FC = () => {
@@ -227,7 +228,7 @@ const AdminDashboard: React.FC = () => {
             <Route path="membership-plans" element={<MembershipPlanManagement />} />
             <Route path="careers" element={<CareersManagement />} />
             <Route path="contact-messages" element={<ContactMessages />} />
-            <Route path="feedback" element={<div className="bg-white p-12 rounded-3xl text-center"><i className="fas fa-tools text-6xl text-gray-100 mb-6"></i><p className="text-gray-400">Feedback Module Coming Soon</p></div>} />
+            <Route path="feedback" element={<FeedbackManagement />} />
           </Routes>
         </div>
       </main>

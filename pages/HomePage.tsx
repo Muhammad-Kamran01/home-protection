@@ -7,12 +7,28 @@ import logo from '../assets/logo.png';
 
 const HomePage: React.FC = () => {
   const [categories, setCategories] = useState<ServiceCategory[]>([]);
+  const [services, setServices] = useState<Array<{ id: string; name: string }>>([]);
+  const [showReviewModal, setShowReviewModal] = useState(false);
+  const [reviewSubmitting, setReviewSubmitting] = useState(false);
+  const [reviewError, setReviewError] = useState('');
+  const [reviewSuccess, setReviewSuccess] = useState('');
+  const [guestReview, setGuestReview] = useState({
+    user_name: '',
+    contact_number: '',
+    service_name: '',
+    rating: 5,
+    comment: '',
+  });
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchCategories = async () => {
-      const { data } = await supabase.from('service_categories').select('*');
-      if (data) setCategories(data);
+    const fetchHomeData = async () => {
+      const [categoriesRes, servicesRes] = await Promise.all([
+        supabase.from('service_categories').select('*'),
+        supabase.from('services').select('id, name').order('name', { ascending: true }),
+      ]);
+
+      if (categoriesRes.data) setCategories(categoriesRes.data);
       else {
         // Fallback for demo if DB is empty
         setCategories([
@@ -24,9 +40,21 @@ const HomePage: React.FC = () => {
           { id: '6', name: 'Plumbing', icon: 'fa-faucet', description: 'Flow control and repair' },
         ]);
       }
+
+      if (servicesRes.data) setServices(servicesRes.data);
     };
-    fetchCategories();
+    fetchHomeData();
   }, []);
+
+  useEffect(() => {
+    if (!showReviewModal) return;
+
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = originalOverflow;
+    };
+  }, [showReviewModal]);
 
   const stats = [
     { label: 'Expert Technicians', value: '150+', icon: 'fa-user-cog' },
@@ -40,6 +68,63 @@ const HomePage: React.FC = () => {
     { id: '2', user_name: 'Sana Khan', comment: 'Fixed my electrical issue within 30 minutes. Highly recommend!', rating: 5, location: 'LAHORE' },
     { id: '3', user_name: 'Zohaib Malik', comment: 'Fair pricing and great communication. The tech was very polite.', rating: 5, location: 'LAHORE' },
   ];
+
+  const closeReviewModal = () => {
+    setShowReviewModal(false);
+    setReviewError('');
+    setReviewSuccess('');
+    setGuestReview({ user_name: '', contact_number: '', service_name: '', rating: 5, comment: '' });
+  };
+
+  const normalizeText = (value: string) => value.trim().toLowerCase().replace(/[^a-z0-9]+/g, ' ');
+
+  const findMatchingServiceId = (serviceName: string) => {
+    const normalizedServiceName = normalizeText(serviceName);
+    if (!normalizedServiceName) return null;
+
+    const matchedService = services.find((service) => {
+      const normalizedName = normalizeText(service.name);
+      return normalizedName === normalizedServiceName || normalizedName.includes(normalizedServiceName) || normalizedServiceName.includes(normalizedName);
+    });
+
+    return matchedService?.id || null;
+  };
+
+  const submitGuestReview = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setReviewError('');
+    setReviewSuccess('');
+
+    if (!guestReview.user_name.trim() || !guestReview.contact_number.trim() || !guestReview.service_name.trim() || !guestReview.comment.trim()) {
+      setReviewError('Please complete your name, contact number, service/experience name, and review message.');
+      return;
+    }
+
+    setReviewSubmitting(true);
+    const matchedServiceId = findMatchingServiceId(guestReview.service_name);
+    const reviewBody = [
+      `Service: ${guestReview.service_name.trim()}`,
+      `Contact: ${guestReview.contact_number.trim()}`,
+      '',
+      guestReview.comment.trim(),
+    ].join('\n');
+
+    const { error } = await supabase.from('reviews').insert([{
+      service_id: matchedServiceId,
+      user_name: guestReview.user_name.trim(),
+      rating: guestReview.rating,
+      comment: reviewBody,
+    }]);
+
+    if (error) {
+      setReviewError(error.message);
+    } else {
+      setReviewSuccess('Thank you. Your review has been submitted successfully.');
+      setGuestReview({ user_name: '', contact_number: '', service_name: '', rating: 5, comment: '' });
+    }
+
+    setReviewSubmitting(false);
+  };
 
   return (
     <div className="w-full overflow-hidden">
@@ -275,6 +360,14 @@ const HomePage: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-extrabold text-blue-900">What Our Customers Say</h2>
+            <p className="mt-4 text-gray-500 max-w-2xl mx-auto">Booked with us without registering? You can still share your experience and help other homeowners choose with confidence.</p>
+            <button
+              onClick={() => setShowReviewModal(true)}
+              className="mt-6 inline-flex items-center gap-3 rounded-full bg-blue-600 px-6 py-3 text-sm font-black uppercase tracking-[0.18em] text-white shadow-xl shadow-blue-100 transition-all hover:bg-blue-700 hover:-translate-y-0.5"
+            >
+              <i className="fas fa-comment-dots"></i>
+              Leave a Review
+            </button>
           </div>
           <div className="grid md:grid-cols-3 gap-8">
             {testimonials.map((rev) => (
@@ -297,6 +390,111 @@ const HomePage: React.FC = () => {
           </div>
         </div>
       </section>
+
+      {showReviewModal && (
+        <div className="fixed inset-0 z-[9999] flex items-start justify-center overflow-y-auto bg-black/50 px-3 py-4 sm:items-center sm:px-4 sm:py-8">
+          <div className="w-full max-w-2xl max-h-[calc(100vh-2rem)] overflow-hidden rounded-[1.5rem] bg-white shadow-2xl border border-gray-100 sm:rounded-[2rem]">
+            <div className="flex items-start justify-between gap-4 border-b border-gray-100 bg-gradient-to-r from-blue-50 to-white px-5 py-4 sm:px-6 sm:py-5 lg:px-8">
+              <div>
+                {/*<p className="text-[10px] font-black uppercase tracking-[0.3em] text-blue-500">Submit Your Review</p>*/}
+                <h3 className="mt-2 text-xl font-black text-blue-900 sm:text-2xl">Share Your Experience</h3>
+                <p className="mt-2 text-sm text-gray-500">No login required. Share feedback after any completed booking or service visit.</p>
+              </div>
+              <button onClick={closeReviewModal} className="shrink-0 rounded-full bg-gray-100 px-4 py-2 text-xs font-black uppercase tracking-widest text-gray-500 hover:bg-gray-200">
+                Close
+              </button>
+            </div>
+
+            <form onSubmit={submitGuestReview} className="max-h-[calc(100vh-8.5rem)] space-y-5 overflow-y-auto px-5 py-5 sm:px-6 sm:py-6 lg:px-8 lg:py-8">
+              <div className="grid gap-4 sm:grid-cols-2 sm:gap-5">
+                <div className="space-y-2">
+                  <label className="text-xs font-black uppercase tracking-widest text-gray-400">Your Name</label>
+                  <input
+                    type="text"
+                    value={guestReview.user_name}
+                    onChange={(e) => setGuestReview((prev) => ({ ...prev, user_name: e.target.value }))}
+                    placeholder="Enter your name"
+                    className="w-full rounded-2xl border border-gray-200 bg-gray-50 px-5 py-4 text-sm outline-none focus:ring-2 focus:ring-blue-600"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-xs font-black uppercase tracking-widest text-gray-400">Contact Number</label>
+                  <input
+                    type="tel"
+                    value={guestReview.contact_number}
+                    onChange={(e) => setGuestReview((prev) => ({ ...prev, contact_number: e.target.value }))}
+                    placeholder="e.g. +92 3XX XXXXXXX"
+                    className="w-full rounded-2xl border border-gray-200 bg-gray-50 px-5 py-4 text-sm outline-none focus:ring-2 focus:ring-blue-600"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-xs font-black uppercase tracking-widest text-gray-400">Service / Experience Title</label>
+                <input
+                  type="text"
+                  value={guestReview.service_name}
+                  onChange={(e) => setGuestReview((prev) => ({ ...prev, service_name: e.target.value }))}
+                  placeholder="Write the service or experience name"
+                  className="w-full rounded-2xl border border-gray-200 bg-gray-50 px-5 py-4 text-sm outline-none focus:ring-2 focus:ring-blue-600"
+                  required
+                />
+                <p className="text-[11px] text-gray-400">You can type the service name in your own words if it is easier.</p>
+              </div>
+
+              <div className="space-y-3">
+                <label className="text-xs font-black uppercase tracking-widest text-gray-400">Rating</label>
+                <div className="flex flex-wrap gap-2">
+                  {[1, 2, 3, 4, 5].map((rating) => (
+                    <button
+                      key={rating}
+                      type="button"
+                      onClick={() => setGuestReview((prev) => ({ ...prev, rating }))}
+                      className={`rounded-full border px-4 py-2 text-xs font-black uppercase tracking-[0.18em] transition-all ${guestReview.rating === rating ? 'border-blue-600 bg-blue-600 text-white shadow-lg shadow-blue-100' : 'border-gray-200 bg-white text-gray-500 hover:border-blue-200 hover:text-blue-600'}`}
+                    >
+                      {rating} Star{rating > 1 ? 's' : ''}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-xs font-black uppercase tracking-widest text-gray-400">Review</label>
+                <textarea
+                  rows={4}
+                  value={guestReview.comment}
+                  onChange={(e) => setGuestReview((prev) => ({ ...prev, comment: e.target.value }))}
+                  placeholder="Share what went well and what could be even better..."
+                  className="w-full rounded-2xl border border-gray-200 bg-gray-50 px-5 py-4 text-sm outline-none focus:ring-2 focus:ring-blue-600"
+                />
+              </div>
+
+              {reviewError && (
+                <div className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+                  {reviewError}
+                </div>
+              )}
+
+              {reviewSuccess && (
+                <div className="rounded-2xl border border-green-200 bg-green-50 px-4 py-3 text-center text-sm text-green-700">
+                  {reviewSuccess}
+                </div>
+              )}
+
+              <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end pt-2">
+                <button type="button" onClick={closeReviewModal} className="rounded-2xl bg-gray-100 px-6 py-3 text-sm font-bold text-gray-700 hover:bg-gray-200 transition-all">
+                  Cancel
+                </button>
+                <button type="submit" disabled={reviewSubmitting} className="rounded-2xl bg-blue-600 px-6 py-3 text-sm font-black text-white hover:bg-blue-700 transition-all disabled:opacity-60">
+                  {reviewSubmitting ? 'Submitting...' : 'Submit Review'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

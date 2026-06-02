@@ -2,16 +2,19 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../App';
 import { supabase } from '../../supabase';
-import { Service, Booking, ServiceCategory } from '../../types';
+import { Service, Booking, ServiceCategory, Review } from '../../types';
 import { Link } from 'react-router-dom';
 
 const CustomerDashboard: React.FC = () => {
   const { user, refreshUser, signOut} = useAuth();
   const [activeTab, setActiveTab] = useState<'overview' | 'bookings' | 'profile' | 'book'>('overview');
   const [bookings, setBookings] = useState<any[]>([]);
+  const [feedbacks, setFeedbacks] = useState<Review[]>([]);
   const [services, setServices] = useState<Service[]>([]);
   const [categories, setCategories] = useState<ServiceCategory[]>([]);
   const [loading, setLoading] = useState(false);
+  const [feedbackDrafts, setFeedbackDrafts] = useState<Record<string, { rating: number; comment: string }>>({});
+  const [submittingFeedbackId, setSubmittingFeedbackId] = useState<string | null>(null);
   
   // Profile Form State
   const [profileForm, setProfileForm] = useState({
@@ -42,17 +45,33 @@ const CustomerDashboard: React.FC = () => {
     }
   }, [user]);
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'auto' });
+  }, [activeTab]);
+
   const fetchData = async () => {
     setLoading(true);
-    const [bookingsRes, servicesRes, categoriesRes] = await Promise.all([
+    const [bookingsRes, servicesRes, categoriesRes, feedbackRes] = await Promise.all([
       supabase.from('bookings').select('*, services(id, name, description, discount_price)').eq('user_id', user?.id).order('created_at', { ascending: false }),
       supabase.from('services').select('*, category:service_categories(*)').eq('is_active', true),
-      supabase.from('service_categories').select('*')
+      supabase.from('service_categories').select('*'),
+      supabase.from('reviews').select('*, services(name)').eq('user_id', user?.id).order('created_at', { ascending: false })
     ]);
 
     if (bookingsRes.data) setBookings(bookingsRes.data);
     if (servicesRes.data) setServices(servicesRes.data);
     if (categoriesRes.data) setCategories(categoriesRes.data);
+    if (feedbackRes.data) setFeedbacks(feedbackRes.data as Review[]);
+
+    if (bookingsRes.data) {
+      const initialDrafts: Record<string, { rating: number; comment: string }> = {};
+      bookingsRes.data
+        .filter((booking: any) => booking.status === 'completed')
+        .forEach((booking: any) => {
+          initialDrafts[booking.id] = { rating: 5, comment: '' };
+        });
+      setFeedbackDrafts((prev) => ({ ...initialDrafts, ...prev }));
+    }
     setLoading(false);
   };
 
@@ -130,10 +149,45 @@ const CustomerDashboard: React.FC = () => {
     return service?.name || 'Unknown Service';
   };
 
+  const getReviewForBooking = (booking: any) => feedbacks.find((review) => review.service_id === booking.service_id && review.user_id === user?.id);
+
+  const submitFeedback = async (booking: any) => {
+    const draft = feedbackDrafts[booking.id] || { rating: 5, comment: '' };
+
+    if (!draft.comment.trim()) {
+      alert('Please add a short comment before submitting feedback.');
+      return;
+    }
+
+    setSubmittingFeedbackId(booking.id);
+    const { error } = await supabase.from('reviews').insert([{
+      user_id: user?.id,
+      service_id: booking.service_id,
+      user_name: booking.customer_name || user?.full_name || '',
+      rating: draft.rating,
+      comment: draft.comment.trim()
+    }]);
+
+    if (error) {
+      alert('Unable to submit feedback: ' + error.message);
+    } else {
+      alert('Thank you for your feedback!');
+      setFeedbackDrafts((prev) => ({
+        ...prev,
+        [booking.id]: { rating: 5, comment: '' }
+      }));
+      fetchData();
+    }
+    setSubmittingFeedbackId(null);
+  };
+
+  const completedBookings = bookings.filter((booking) => booking.status === 'completed');
+  const pendingFeedbackCount = completedBookings.filter((booking) => !getReviewForBooking(booking)).length;
+
   return (
-    <div className="flex-1 bg-gray-50 flex flex-col md:flex-row h-[calc(100vh-80px)] overflow-hidden">
+    <div className="flex-1 bg-gray-50 flex flex-col md:flex-row">
       {/* Dashboard Sidebar */}
-      <aside className="w-full md:w-80 bg-white border-r border-gray-100 p-8 flex flex-col gap-8 h-screen overflow-y-auto">
+      <aside className="w-full md:w-80 bg-white border-r border-gray-100 p-8 pb-8 flex flex-col gap-8 md:min-h-[calc(100vh-80px)] md:sticky md:top-0 shrink-0">
         <div className="flex items-center gap-4">
           <div className="w-14 h-14 bg-blue-600 rounded-2xl flex items-center justify-center text-white text-xl font-black shadow-lg shadow-blue-100">
             {user?.full_name[0]}
@@ -187,7 +241,7 @@ const CustomerDashboard: React.FC = () => {
       </aside>
 
       {/* Main Content Area */}
-      <main className="flex-1 flex flex-col overflow-hidden">
+      <main className="flex-1 flex flex-col">
         {/* Dynamic Header */}
         <header className="bg-white px-10 py-6 shadow-sm border-b border-gray-100 flex justify-between items-center shrink-0">
           <div>
@@ -213,8 +267,6 @@ const CustomerDashboard: React.FC = () => {
           </Link>
         </header>
         
-        <br></br>
-        <br></br>
         {/* Tab Content */}
         <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 p-8 md:p-10">
           {activeTab === 'overview' && (
@@ -275,7 +327,23 @@ const CustomerDashboard: React.FC = () => {
 
           {activeTab === 'bookings' && (
             <div className="space-y-6">
-              {bookings.map(b => (
+              <div className="bg-blue-900 text-white p-6 rounded-[2rem] shadow-lg flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                  <p className="text-[10px] uppercase tracking-[0.3em] text-blue-200 font-black">Feedback Loop</p>
+                  <h3 className="text-2xl font-black mt-2">Help us improve your next visit</h3>
+                  <p className="text-sm text-blue-100 mt-2">Completed services appear here with a feedback form so you can rate the experience while it is still fresh.</p>
+                </div>
+                <div className="bg-white/10 backdrop-blur rounded-2xl px-5 py-4 text-center min-w-[180px]">
+                  <p className="text-4xl font-black">{pendingFeedbackCount}</p>
+                  <p className="text-[10px] uppercase tracking-widest text-blue-200 font-black mt-1">Requests Waiting</p>
+                </div>
+              </div>
+
+              {bookings.map(b => {
+                const existingFeedback = getReviewForBooking(b);
+                const draft = feedbackDrafts[b.id] || { rating: 5, comment: '' };
+
+                return (
                 <div key={b.id} className="bg-white p-8 rounded-[2.5rem] shadow-sm border border-gray-100 flex flex-col md:flex-row md:items-center justify-between gap-6 hover:shadow-lg transition-all">
                   <div className="flex items-center gap-6">
                     <div className={`w-16 h-16 rounded-[1.25rem] flex items-center justify-center text-2xl ${getStatusColor(b.status)}`}>
@@ -312,8 +380,71 @@ const CustomerDashboard: React.FC = () => {
                       </button>
                     )}
                   </div>
+
+                  {b.status === 'completed' && (
+                    <div className="md:ml-8 md:w-[420px] w-full rounded-[2rem] border border-gray-100 bg-gray-50 p-6">
+                      {existingFeedback ? (
+                        <div className="space-y-3">
+                          <div className="flex items-center justify-between gap-3">
+                            <p className="text-sm font-black uppercase tracking-widest text-blue-600">Review Submitted</p>
+                            <span className="rounded-full bg-green-100 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-green-700">Thank you</span>
+                          </div>
+                          <div className="flex gap-1 text-amber-400">
+                            {Array.from({ length: 5 }).map((_, index) => (
+                              <i key={index} className={`fas fa-star ${index < existingFeedback.rating ? 'text-amber-400' : 'text-gray-200'}`}></i>
+                            ))}
+                          </div>
+                          <p className="text-sm text-gray-600 leading-6">{existingFeedback.comment}</p>
+                        </div>
+                      ) : (
+                        <div className="space-y-4">
+                          <div>
+                            <p className="text-sm font-black uppercase tracking-widest text-blue-600">Leave Review</p>
+                            <p className="mt-2 text-sm text-gray-500">Tell us how the service went so we can keep improving the experience.</p>
+                          </div>
+
+                          <div className="flex flex-wrap gap-2">
+                            {[1, 2, 3, 4, 5].map((rating) => (
+                              <button
+                                key={rating}
+                                type="button"
+                                onClick={() => setFeedbackDrafts((prev) => ({
+                                  ...prev,
+                                  [b.id]: { ...draft, rating }
+                                }))}
+                                className={`rounded-full border px-4 py-2 text-xs font-black uppercase tracking-widest transition-all ${draft.rating === rating ? 'border-blue-600 bg-blue-600 text-white shadow-lg shadow-blue-100' : 'border-gray-200 bg-white text-gray-500 hover:border-blue-200 hover:text-blue-600'}`}
+                              >
+                                {rating} Star{rating > 1 ? 's' : ''}
+                              </button>
+                            ))}
+                          </div>
+
+                          <textarea
+                            rows={4}
+                            value={draft.comment}
+                            onChange={(e) => setFeedbackDrafts((prev) => ({
+                              ...prev,
+                              [b.id]: { ...draft, comment: e.target.value }
+                            }))}
+                            placeholder="Share what went well and what could be better..."
+                            className="w-full rounded-2xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-blue-600"
+                          />
+
+                          <button
+                            onClick={() => submitFeedback(b)}
+                            disabled={submittingFeedbackId === b.id}
+                            className="w-full rounded-2xl bg-blue-600 px-5 py-3.5 text-sm font-black text-white shadow-lg shadow-blue-100 transition-all hover:bg-blue-700 disabled:opacity-60"
+                          >
+                            {submittingFeedbackId === b.id ? <i className="fas fa-spinner fa-spin mr-2"></i> : <i className="fas fa-paper-plane mr-2"></i>}
+                            Submit Review
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </div>
-              ))}
+                );
+              })}
               {bookings.length === 0 && (
                 <div className="bg-white py-32 rounded-[3rem] text-center border-2 border-dashed border-gray-100">
                   <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-6 text-gray-200 text-3xl">

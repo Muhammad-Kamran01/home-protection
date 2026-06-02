@@ -10,6 +10,7 @@ export interface User {
   email: string;
   full_name: string;
   phone?: string;
+  home_address?: string;
   role: UserRole;
   created_at: string;
 }
@@ -75,9 +76,11 @@ export interface ContactMessage {
 export interface Review {
   id: string;
   service_id?: string;
+  user_id?: string;
   user_name: string;
   rating: number;
   comment: string;
+  created_at?: string;
   avatar_url?: string;
   location?: string;
 }
