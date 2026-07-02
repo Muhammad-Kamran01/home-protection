@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { supabase } from '../supabase';
 import { Service, ServiceCategory } from '../types';
+import { openMembershipOfferModal } from '../components/MembershipOfferModal';
 
 const ServicesPage: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -62,6 +63,15 @@ const ServicesPage: React.FC = () => {
       <div className="bg-blue-800 py-20 text-center text-white">
         <h1 className="text-4xl font-black mb-4">Our Services</h1>
         <p className="text-blue-100 max-w-xl mx-auto">Quality maintenance solutions tailored for your needs.</p>
+        <div className="mt-8 flex justify-center">
+          <button
+            type="button"
+            onClick={openMembershipOfferModal}
+            className="inline-flex items-center gap-2 rounded-xl bg-white px-7 py-3 text-sm font-black text-blue-800 shadow-lg shadow-blue-950/20 transition-transform hover:-translate-y-0.5 hover:bg-blue-50"
+          >
+            Membership Offer <i className="fas fa-id-card"></i>
+          </button>
+        </div>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">

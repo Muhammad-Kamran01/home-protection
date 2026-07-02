@@ -1,10 +1,14 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { useLocation } from "react-router";
 import { supabase } from "../supabase";
 import popupImage from "../assets/popup.png";
 
 const membershipTermsImage = popupImage;
 const membershipDetailsPdfUrl = "/membership-details.pdf";
+const MEMBERSHIP_OFFER_OPEN_EVENT = "membership-offer:open";
+
+export const openMembershipOfferModal = () => {
+  window.dispatchEvent(new Event(MEMBERSHIP_OFFER_OPEN_EVENT));
+};
 
 interface MembershipFormData {
   fullName: string;
@@ -34,7 +38,6 @@ const paymentMethods = [
 const paymentProofBucket = "membership-payment-proofs";
 
 const MembershipOfferModal: React.FC = () => {
-  const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
   const [showDetailedForm, setShowDetailedForm] = useState(false);
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
@@ -46,15 +49,20 @@ const MembershipOfferModal: React.FC = () => {
   const successPopupTimeoutRef = React.useRef<number | null>(null);
 
   useEffect(() => {
-    const shouldShowOnRoute = location.pathname === "/" || location.pathname === "/services";
-    if (shouldShowOnRoute) {
+    const handleOpen = () => {
       setIsOpen(true);
       setShowDetailedForm(false);
       setShowSuccessPopup(false);
       setSubmitError("");
       setSubmitSuccess("");
-    }
-  }, [location.pathname]);
+    };
+
+    window.addEventListener(MEMBERSHIP_OFFER_OPEN_EVENT, handleOpen);
+
+    return () => {
+      window.removeEventListener(MEMBERSHIP_OFFER_OPEN_EVENT, handleOpen);
+    };
+  }, []);
 
   useEffect(() => {
     if (!isOpen && !showDetailedForm && !showSuccessPopup) return;
