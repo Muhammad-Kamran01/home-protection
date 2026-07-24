@@ -130,18 +130,18 @@ const HomePage: React.FC = () => {
   return (
     <div className="w-full overflow-hidden">
       {/* Hero Section */}
-      <section className="relative min-h-[560px] md:h-[650px] bg-blue-900 flex items-center py-16 md:py-0">
+      <section className="relative min-h-[520px] sm:min-h-[560px] md:h-[650px] bg-blue-900 flex items-center py-12 sm:py-16 md:py-0 overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img 
             src="https://electrafix.pk/wp-content/uploads/2024/10/Handyman-Services.jpg?q=80&w=2070&auto=format&fit=crop" 
             alt="Maintenance Worker" 
-            className="w-full h-full object-cover opacity-40"
+            className="w-full h-full object-cover object-center sm:object-[70%_center] opacity-40"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-blue-950 via-blue-900/80 to-transparent"></div>
         </div>
         
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-white">
-          <div className="max-w-2xl">
+        <div className="relative z-10 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 text-white">
+          <div className="max-w-2xl pb-4 sm:pb-0">
             <h1 className="text-3xl sm:text-4xl md:text-6xl font-extrabold mb-5 md:mb-6 leading-tight">
               Your Home Deserves <br />
               <span className="text-yellow-400">Professional Protection</span>
@@ -149,17 +149,17 @@ const HomePage: React.FC = () => {
             <p className="text-base sm:text-lg md:text-xl text-gray-200 mb-8 md:mb-10 leading-relaxed">
               Our protector is coming at your home. We are experts to take care of your home. We provide services in preferred time. Ensure the standards and security of the home.
             </p>
-            <div className="flex flex-nowrap items-center gap-3 sm:gap-4 overflow-x-auto pb-1 sm:overflow-visible sm:pb-0">
-              <Link to="/services" className="inline-flex w-auto shrink-0 whitespace-nowrap justify-center bg-yellow-400 text-blue-900 px-5 sm:px-6 py-3.5 rounded-xl font-bold text-sm sm:text-base md:text-lg hover:bg-yellow-500 transition-all items-center gap-2 group">
+            <div className="flex flex-col gap-3 sm:flex-row sm:flex-nowrap sm:items-center sm:gap-4 sm:overflow-visible sm:pb-0">
+              <Link to="/services" className="inline-flex w-full sm:w-auto shrink-0 justify-center bg-yellow-400 text-blue-900 px-5 sm:px-6 py-3.5 rounded-xl font-bold text-sm sm:text-base md:text-lg hover:bg-yellow-500 transition-all items-center gap-2 group">
                 Explore Services <i className="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
               </Link>
-              <Link to="/contact" className="inline-flex w-auto shrink-0 whitespace-nowrap items-center justify-center text-center bg-transparent border-2 border-white/30 hover:border-white text-white px-5 sm:px-6 py-3.5 rounded-xl font-bold text-sm sm:text-base md:text-lg transition-all backdrop-blur-sm">
+              <Link to="/contact" className="inline-flex w-full sm:w-auto shrink-0 items-center justify-center text-center bg-transparent border-2 border-white/30 hover:border-white text-white px-5 sm:px-6 py-3.5 rounded-xl font-bold text-sm sm:text-base md:text-lg transition-all backdrop-blur-sm">
                 Contact Support
               </Link>
               <button
                 type="button"
                 onClick={openMembershipOfferModal}
-                className="inline-flex w-auto shrink-0 whitespace-nowrap items-center justify-center bg-white text-blue-900 px-5 sm:px-6 py-3.5 rounded-xl font-bold text-sm sm:text-base md:text-lg hover:bg-blue-50 transition-all gap-2 border border-white/20 shadow-lg shadow-blue-950/20"
+                className="inline-flex w-full sm:w-auto shrink-0 items-center justify-center bg-white text-blue-900 px-5 sm:px-6 py-3.5 rounded-xl font-bold text-sm sm:text-base md:text-lg hover:bg-blue-50 transition-all gap-2 border border-white/20 shadow-lg shadow-blue-950/20"
               >
                 Membership Offer <i className="fas fa-id-card"></i>
               </button>
