@@ -14,6 +14,7 @@ import CareersManagement from './CareersManagement';
 import ContactMessages from './ContactMessages';
 import FeedbackManagement from './FeedbackManagement.tsx';
 import MembershipPlanManagement from './MembershipPlanManagement';
+import InvoiceManagement from './InvoiceManagement';
 
 const AdminDashboard: React.FC = () => {
   const { user, signOut } = useAuth();
@@ -90,6 +91,7 @@ const AdminDashboard: React.FC = () => {
     { name: 'Careers', path: '/admin/careers', icon: 'fa-briefcase' },
     { name: 'Contact Messages', path: '/admin/contact-messages', icon: 'fa-envelope' },
     { name: 'Feedback', path: '/admin/feedback', icon: 'fa-comment-dots' },
+    { name: 'Invoices', path: '/admin/invoices', icon: 'fa-file-invoice' },
   ];
 
   return (
@@ -229,6 +231,7 @@ const AdminDashboard: React.FC = () => {
             <Route path="careers" element={<CareersManagement />} />
             <Route path="contact-messages" element={<ContactMessages />} />
             <Route path="feedback" element={<FeedbackManagement />} />
+            <Route path="invoices" element={<InvoiceManagement />} />
           </Routes>
         </div>
       </main>
