@@ -132,12 +132,17 @@ const HomePage: React.FC = () => {
       {/* Hero Section */}
       <section className="relative min-h-[520px] sm:min-h-[560px] md:h-[650px] bg-blue-900 flex items-center py-12 sm:py-16 md:py-0 overflow-hidden">
         <div className="absolute inset-0 z-0">
-          <img 
-            src="https://electrafix.pk/wp-content/uploads/2024/10/Handyman-Services.jpg?q=80&w=2070&auto=format&fit=crop" 
-            alt="Maintenance Worker" 
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            aria-label="Maintenance worker providing home protection services"
             className="w-full h-full object-cover object-center sm:object-[70%_center] opacity-40"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-blue-950 via-blue-900/80 to-transparent"></div>
+          >
+            <source src="/videos/Hero.mp4" type="video/mp4" />
+          </video>
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-950 via-blue-950/0 via-[50%] to-transparent"></div>
         </div>
         
         <div className="relative z-10 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 text-white">
