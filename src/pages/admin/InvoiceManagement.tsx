@@ -424,9 +424,10 @@ const InvoiceManagement: React.FC = () => {
                 <img src={logo} alt="Home Protection" className="w-20 h-20 object-contain" />
               </div>
 
-              <h1 className="text-4xl font-black text-gray-900 uppercase tracking-wider text-center">
-                SERVICE INVOICE
+              <h1 className="text-4xl font-black text-gray-900 uppercase tracking-wider text-center mb-2">
+                INVOICE
               </h1>
+              <h4 className="font-semibold italic text-blue-900 tracking-wide text-center">Home Protection — Business NTN: 2734086-4</h4>
             </div>
 
             {/* Billed To and Meta Info columns */}
