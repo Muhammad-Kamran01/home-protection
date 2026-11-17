@@ -26,9 +26,6 @@ const InvoiceManagement: React.FC = () => {
   // Invoice line items (defaults to 3 empty/editable rows)
   const [items, setItems] = useState<InvoiceItem[]>([
     { description: "AC Deep Cleaning & Gas Refilling", quantity: 1, unitPrice: 3500, taxRate: 16 },
-    { description: "Electrical Wiring Inspection", quantity: 1, unitPrice: 1500, taxRate: 16 },
-    { description: "", quantity: 0, unitPrice: 0, taxRate: 0 },
-    { description: "", quantity: 0, unitPrice: 0, taxRate: 0 },
   ]);
 
   const [otherTax, setOtherTax] = useState<number>(0);
@@ -166,9 +163,10 @@ const InvoiceManagement: React.FC = () => {
     }
   };
 
-  // Ensure table has at least 5 rows for identical visual structure as attachment
+
+  // Ensure table has at least 1 row for identical visual structure as attachment
   const paddedItems = [...items];
-  while (paddedItems.length < 5) {
+  while (paddedItems.length < 1) {
     paddedItems.push({ description: "", quantity: 0, unitPrice: 0, taxRate: 0 });
   }
 
@@ -414,20 +412,27 @@ const InvoiceManagement: React.FC = () => {
         {/* Printable Invoice Container */}
         <div
           id="printable-invoice"
-          className="bg-white w-full max-w-[800px] aspect-[1/1.4] shadow-2xl rounded-[1.5rem] border border-gray-100 p-10 flex flex-col justify-between"
+          className="relative overflow-hidden bg-white w-full max-w-[800px] aspect-[1/1.4] shadow-2xl rounded-[1.5rem] border border-gray-100 p-10 flex flex-col justify-between"
           style={{ fontFamily: "'Inter', sans-serif" }}
         >
+          <img
+            src={logo}
+            alt=""
+            aria-hidden="true"
+            className="absolute inset-0 m-auto w-160 h-160 object-contain opacity-[0.08] pointer-events-none"
+          />
+
           {/* Header Row */}
-          <div>
-            <div className="relative pb-6">
+          <div className="relative z-10">
+            <div className="relative pt-6 pb-6">
               <div className="absolute left-0 top-0">
-                <img src={logo} alt="Home Protection" className="w-20 h-20 object-contain" />
+                <img src={logo} alt="Home Protection" className="w-40 h-40 object-contain" />
               </div>
 
               <h1 className="text-4xl font-black text-gray-900 uppercase tracking-wider text-center mb-2">
                 INVOICE
               </h1>
-              <h4 className="font-semibold italic text-blue-900 tracking-wide text-center">Home Protection — Business NTN: 2734086-4</h4>
+              <h4 className="font-semibold italic text-blue-900 tracking-wide text-center">Home Protection Enterprises — NTN: 2734086-4</h4>
             </div>
 
             {/* Billed To and Meta Info columns */}
@@ -523,19 +528,19 @@ const InvoiceManagement: React.FC = () => {
                 <table className="w-1/3 border border-gray-400 border-collapse text-right">
                   <tbody>
                     <tr>
-                      <td className="py-2 px-4 border border-gray-400 bg-white text-[10px] uppercase tracking-wider font-extrabold text-gray-900">Sub Total</td>
+                      <td className="py-2 px-4 border border-gray-400 bg-white/40 text-[10px] uppercase tracking-wider font-extrabold text-gray-900">Sub Total</td>
                       <td className="py-2 px-4 border border-gray-400 text-xs font-bold text-right text-gray-900">{subTotal > 0 ? subTotal.toLocaleString() : ""}</td>
                     </tr>
                     <tr>
-                      <td className="py-2 px-4 border border-gray-400 bg-white text-[10px] uppercase tracking-wider font-extrabold text-gray-900">Sales Tax</td>
+                      <td className="py-2 px-4 border border-gray-400 bg-white/40 text-[10px] uppercase tracking-wider font-extrabold text-gray-900">Sales Tax</td>
                       <td className="py-2 px-4 border border-gray-400 text-xs font-bold text-right text-gray-900">{salesTax > 0 ? salesTax.toLocaleString() : ""}</td>
                     </tr>
                     <tr>
-                      <td className="py-2 px-4 border border-gray-400 bg-white text-[10px] uppercase tracking-wider font-extrabold text-gray-900">Other Tax</td>
+                      <td className="py-2 px-4 border border-gray-400 bg-white/40 text-[10px] uppercase tracking-wider font-extrabold text-gray-900">Other Tax</td>
                       <td className="py-2 px-4 border border-gray-400 text-xs font-bold text-right text-gray-900">{otherTax > 0 ? otherTax.toLocaleString() : ""}</td>
                     </tr>
-                    <tr className="bg-gray-50/70">
-                      <td className="py-2.5 px-4 border-2 border-gray-400 bg-gray-100/50 text-[11px] uppercase tracking-wider font-black text-gray-950">Total Payable Amount</td>
+                    <tr className="bg-gray-50/40">
+                      <td className="py-2.5 px-4 border-2 border-gray-400 bg-gray-100/30 text-[11px] uppercase tracking-wider font-black text-gray-950">Total Payable Amount</td>
                       <td className="py-2.5 px-4 border-2 border-gray-400 text-sm font-black text-right text-blue-900">{totalPayable > 0 ? totalPayable.toLocaleString() : ""}</td>
                     </tr>
                   </tbody>
@@ -545,16 +550,16 @@ const InvoiceManagement: React.FC = () => {
           </div>
 
           {/* Lower Bottom Signature */}
-          <div className="mt-12 space-y-12">
+          <div className="relative z-10 mt-12 space-y-12">
             <div className="w-56 text-left">
               <div className="border-t border-gray-400 w-full mb-2"></div>
-              <p className="text-sm font-black text-gray-900 tracking-tight">Authorized Signatory</p>
+              <p className="text-sm font-black tracking-tight"><span className="text-white">Authorized</span> <span className="text-black">Signature</span></p>
             </div>
 
             {/* Blue Banner Footer */}
-            <div className="bg-[#00a2e8] text-white p-4 rounded-xl text-center space-y-1">
-              <p className="text-[10px] font-bold tracking-wider uppercase">Thank you for your service order.</p>
-              <p className="text-[8px] opacity-90 font-medium">
+            <div className="bg-[#00a2e8] text-black p-4 rounded-xl text-center space-y-1">
+              <p className="text-[12px] font-bold tracking-wider uppercase">Thank you for your service order.</p>
+              <p className="text-[13px] font-bold opacity-90 font-medium">
                 Email: support@homeprotection.pk | Phone: +923161455160 | Address: Town Ship, Lahore, Punjab, Pakistan
               </p>
             </div>
